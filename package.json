@@ -1,0 +1,25 @@
+{
+  "name": "my-library",
+  "version": "1.0.0",
+  "source": "src/index.ts",
+  "main": "dist/main.js",
+  "module": "dist/module.js",
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.2.0",
+    "@typescript-eslint/parser": "^5.2.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.25.2",
+    "parcel": "latest"
+  },
+  "dependencies": {
+    "@parcel/transformer-glsl": "^2.0.0",
+    "@types/three": "^0.133.1",
+    "three": "^0.133.1",
+    "typescript": "^4.4.4"
+  }
+}
