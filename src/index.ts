@@ -1,12 +1,12 @@
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-import baseSphereVertexShader from "./shaders/baseSphere.vert.glsl"
-import baseSphereFragmentShader from "./shaders/baseSphere.frag.glsl";
+import { Vector3 } from 'three';
+import baseSphereVertexShader from './shaders/baseSphere.vert.glsl';
+import baseSphereFragmentShader from './shaders/baseSphere.frag.glsl';
 
-import atmosphereVertexShader from "./shaders/atmosphere.vert.glsl"
-import atmosphereFragmentShader from "./shaders/atmosphere.frag.glsl";
-import { Vector3 } from "three";
+import atmosphereVertexShader from './shaders/atmosphere.vert.glsl';
+import atmosphereFragmentShader from './shaders/atmosphere.frag.glsl';
 
 const degreesToRadians = (degrees: number) => degrees * (Math.PI / 180);
 
@@ -26,56 +26,58 @@ export interface GlobeConfig {
       transparent: boolean;
     };
     showDebugger: boolean;
-}  
+}
 
 class Globe {
   globeConfig: GlobeConfig = {
-    container: "globe-container",
+    container: 'globe-container',
     radius: 600,
     baseSphere: {
       color: 0x1c335a,
       opacity: 1,
-      transparent: true
+      transparent: true,
     },
     dotSphere: {
       numberOfDots: 60000,
       alphaMap:
-        "https://images.ctfassets.net/fzn2n1nzq965/11064gUb2CgTJXKVwAt5J9/297a98a65d04d4fbb979072ce60466ab/map_fill-a78643e8.png",
+        'https://images.ctfassets.net/fzn2n1nzq965/11064gUb2CgTJXKVwAt5J9/297a98a65d04d4fbb979072ce60466ab/map_fill-a78643e8.png',
       color: 0x3d689c,
       opacity: 0.8,
-      transparent: true
+      transparent: true,
     },
-    showDebugger: false
+    showDebugger: false,
   };
 
   imageData: ImageData | undefined;
 
   scene: THREE.Scene = new THREE.Scene();
+
   camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera();
+
   renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({
     antialias: true,
-    alpha: true
+    alpha: true,
   });
 
   constructor(
     globeConfig: GlobeConfig = {
-      container: "globe-container",
+      container: 'globe-container',
       radius: 600,
       baseSphere: {
         color: 0x1c335a,
         opacity: 1,
-        transparent: true
+        transparent: true,
       },
       dotSphere: {
         numberOfDots: 60000,
         alphaMap:
-          "https://images.ctfassets.net/fzn2n1nzq965/11064gUb2CgTJXKVwAt5J9/297a98a65d04d4fbb979072ce60466ab/map_fill-a78643e8.png",
+          'https://images.ctfassets.net/fzn2n1nzq965/11064gUb2CgTJXKVwAt5J9/297a98a65d04d4fbb979072ce60466ab/map_fill-a78643e8.png',
         color: 0x3d689c,
         opacity: 0.8,
-        transparent: true
+        transparent: true,
       },
-      showDebugger: false
-    }
+      showDebugger: false,
+    },
   ) {
     this.globeConfig = globeConfig;
 
@@ -120,13 +122,13 @@ class Globe {
   drawBaseSphere = () => {
     const geometry = new THREE.SphereGeometry(this.globeConfig.radius, 50, 50);
     const material = new THREE.ShaderMaterial({
-        uniforms: {
-            color: {
-                value: new THREE.Vector3(0.11, 0.2, 0.353)
-            }
+      uniforms: {
+        color: {
+          value: new THREE.Vector3(0.11, 0.2, 0.353),
         },
-        vertexShader: baseSphereVertexShader,
-        fragmentShader: baseSphereFragmentShader
+      },
+      vertexShader: baseSphereVertexShader,
+      fragmentShader: baseSphereFragmentShader,
     });
 
     const baseSphere = new THREE.Mesh(geometry, material);
@@ -137,20 +139,20 @@ class Globe {
   drawAtmosphere = () => {
     const atmosphereGeometry = new THREE.SphereGeometry(this.globeConfig.radius, 50, 50);
     const atmosphereMaterial = new THREE.ShaderMaterial({
-        uniforms: {
-            color: {
-                value: new THREE.Vector3(0.11, 0.2, 0.353)
-            }
+      uniforms: {
+        color: {
+          value: new THREE.Vector3(0.11, 0.2, 0.353),
         },
-        vertexShader: atmosphereVertexShader,
-        fragmentShader: atmosphereFragmentShader,
-        blending: THREE.AdditiveBlending,
-        side: THREE.BackSide
+      },
+      vertexShader: atmosphereVertexShader,
+      fragmentShader: atmosphereFragmentShader,
+      blending: THREE.AdditiveBlending,
+      side: THREE.BackSide,
     });
 
     const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
     atmosphere.scale.set(1.1, 1.1, 1.1);
-    
+
     this.scene.add(atmosphere);
   }
 
@@ -160,21 +162,21 @@ class Globe {
     const material = new THREE.MeshBasicMaterial({
       color: 0x3d689c,
       transparent: true,
-      opacity: 0.5
+      opacity: 0.5,
     });
 
     const instancedMesh = new THREE.InstancedMesh(
       geometry,
       material,
-      this.globeConfig.dotSphere.numberOfDots
+      this.globeConfig.dotSphere.numberOfDots,
     );
-    instancedMesh.rotation.y -= Math.PI / 2;
+    instancedMesh.rotation.y -= (Math.PI / 2) - 0.02;
 
-    for (let i = 0; i < this.globeConfig.dotSphere.numberOfDots; i++) {
+    for (let i = 0; i < this.globeConfig.dotSphere.numberOfDots; i += 1) {
       const configuredMatrix = this.configureDotMatrix(
         i,
         matrix,
-        instancedMesh
+        instancedMesh,
       );
       instancedMesh.setMatrixAt(i, configuredMatrix);
     }
@@ -185,10 +187,10 @@ class Globe {
   configureDotMatrix = (
     i: number,
     matrix: THREE.Matrix4,
-    instancedMesh: THREE.InstancedMesh
+    instancedMesh: THREE.InstancedMesh,
   ) => {
-    const radius = this.globeConfig.radius;
-    const numberOfDots = this.globeConfig.dotSphere.numberOfDots;
+    const { radius } = this.globeConfig;
+    const { numberOfDots } = this.globeConfig.dotSphere;
 
     const targetVector = new THREE.Vector3(0, 0, 0);
 
@@ -214,9 +216,13 @@ class Globe {
     // First dot is at the bottom of the mesh and is off-centered due to the pattern.
     // Therefore exclude the point by setting scale to 0.
     if (i === 0 || alpha < 128) {
-      scale.x = scale.y = scale.z = 0;
+      scale.x = 0;
+      scale.y = 0;
+      scale.z = 0;
     } else {
-      scale.x = scale.y = scale.z = 1;
+      scale.x = 1;
+      scale.y = 1;
+      scale.z = 1;
     }
 
     return matrix.compose(position, quaternion, scale);
@@ -229,12 +235,14 @@ class Globe {
     const v = 1 - (0.5 + Math.asin(nPosition.y) / Math.PI);
 
     const tx = Math.min(
+      // eslint-disable-next-line no-bitwise
       (this.emod(u, 1) * this.imageData.width) | 0,
-      this.imageData.width - 1
+      this.imageData.width - 1,
     );
     const ty = Math.min(
+      // eslint-disable-next-line no-bitwise
       (this.emod(v, 1) * this.imageData.height) | 0,
-      this.imageData.height - 1
+      this.imageData.height - 1,
     );
     const offset = (ty * this.imageData.width + tx) * 4;
 
@@ -242,15 +250,13 @@ class Globe {
     return this.imageData!.data[offset + 3];
   };
 
-  emod = (n: number, m: number): number => {
-    return ((n % m) + m) % m;
-  };
+  emod = (n: number, m: number): number => ((n % m) + m) % m;
 
   getImageData = () => {
     this.fetchAlphaMapImage().then(
       (result) => {
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d') as CanvasRenderingContext2D;
 
         canvas.width = result.width;
         canvas.height = result.height;
@@ -261,17 +267,17 @@ class Globe {
           0,
           0,
           result.width,
-          result.height
+          result.height,
         );
       },
       (error) => {
-        console.error("Globe", error);
-      }
+        console.error('Globe', error);
+      },
     );
   };
 
   fetchAlphaMapImage = (): Promise<HTMLImageElement> => {
-    const alphaMap = this.globeConfig.dotSphere.alphaMap;
+    const { alphaMap } = this.globeConfig.dotSphere;
     const loader = new THREE.ImageLoader();
 
     return new Promise((resolve, reject) => {
@@ -283,15 +289,15 @@ class Globe {
         undefined,
         (error: Event) => {
           reject(error);
-        }
+        },
       );
     });
-  }; 
-  
+  };
+
   calculateXYZFromLatLon = (lat: number, lon: number): Vector3 => {
     const phi = degreesToRadians(90 - lat);
     const theta = degreesToRadians(lon + 180);
-    const rho = this.globeConfig.radius
+    const rho = this.globeConfig.radius;
 
     const x = -(Math.sin(phi) * Math.cos(theta) * rho);
     const y = Math.cos(phi) * rho;
@@ -301,40 +307,36 @@ class Globe {
   }
 
   drawPoint = () => {
-      const zero = {
-        lat: 0,
-        lon: 0,
-      }
+    const targetVector = new THREE.Vector3(0, 0, 0);
+    const geometry = new THREE.SphereGeometry(2, 8, 8);
+    const material = new THREE.MeshBasicMaterial({
+      color: 0xFF0000,
+    });
 
-      const ams = {
+    const locations = [
+      {
         lat: 52.3676,
         lon: 4.9041,
-      }
-
-      const buenos = {
+      },
+      {
         lat: -34.6037,
         lon: -58.3816,
-      }
-
-      const sydney = {
+      },
+      {
         lat: -33.8688,
         lon: 151.2093,
-      }
+      },
+    ];
 
-      const targetVector = new THREE.Vector3(0, 0, 0);
-      const position = this.calculateXYZFromLatLon(ams.lat, ams.lon);
-
-      const geometry = new THREE.SphereGeometry(2, 8, 8);
-      const material = new THREE.MeshBasicMaterial({
-        color: 0xFF0000,
-      });
+    locations.forEach((location) => {
+      const position = this.calculateXYZFromLatLon(location.lat, location.lon);
 
       const mesh = new THREE.Mesh(geometry, material);
       mesh.position.copy(position);
-
       mesh.lookAt(targetVector);
 
       this.scene.add(mesh);
+    });
   }
 
   animate = () => {
