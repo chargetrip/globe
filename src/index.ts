@@ -1,11 +1,14 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-import baseSphereVertexShader from "./shaders/baseSphereVertex.glsl"
-import baseSphereFragmentShader from "./shaders/baseSphereFragment.glsl";
+import baseSphereVertexShader from "./shaders/baseSphere.vert.glsl"
+import baseSphereFragmentShader from "./shaders/baseSphere.frag.glsl";
 
-import atmosphereVertexShader from "./shaders/atmosphereVertex.glsl"
-import atmosphereFragmentShader from "./shaders/atmosphereFragment.glsl";
+import atmosphereVertexShader from "./shaders/atmosphere.vert.glsl"
+import atmosphereFragmentShader from "./shaders/atmosphere.frag.glsl";
+import { Vector3 } from "three";
+
+const degreesToRadians = (degrees: number) => degrees * (Math.PI / 180);
 
 export interface GlobeConfig {
     container: string;
@@ -165,6 +168,7 @@ class Globe {
       material,
       this.globeConfig.dotSphere.numberOfDots
     );
+    instancedMesh.rotation.y -= Math.PI / 2;
 
     for (let i = 0; i < this.globeConfig.dotSphere.numberOfDots; i++) {
       const configuredMatrix = this.configureDotMatrix(
@@ -282,43 +286,43 @@ class Globe {
         }
       );
     });
-  };
+  }; 
+  
+  calculateXYZFromLatLon = (lat: number, lon: number): Vector3 => {
+    const phi = degreesToRadians(90 - lat);
+    const theta = degreesToRadians(lon + 180);
+    const rho = this.globeConfig.radius
 
-  calculateXYZFromLatLon = (lat: number, lon: number): Array<number> => {
-    const radius = this.globeConfig.radius
-    const phi = lat * (Math.PI / 180);
-    const theta = lon * (Math.PI / 180);
+    const x = -(Math.sin(phi) * Math.cos(theta) * rho);
+    const y = Math.cos(phi) * rho;
+    const z = Math.sin(phi) * Math.sin(theta) * rho;
 
-    const x = radius * Math.cos(phi) * Math.sin(theta);
-    const y = radius * Math.sin(phi) * Math.sin(theta);
-    const z = radius * Math.cos(theta);
-    
-    return [x, y, z];
+    return new Vector3(x, y, z);
   }
 
   drawPoint = () => {
       const zero = {
-          lat: 0,
-          lon: 0
+        lat: 0,
+        lon: 0,
       }
 
-        const ams = {
-            lat: 52.3676,
-            lon: 4.9041
-        }
+      const ams = {
+        lat: 52.3676,
+        lon: 4.9041,
+      }
 
-        const buenos = {
-            lat: 34.6037,
-            lon: 58.3816
-        }
+      const buenos = {
+        lat: -34.6037,
+        lon: -58.3816,
+      }
 
-        const sydney = {
-            lat: 33.8688,
-            lon: 151.2093
-        }
+      const sydney = {
+        lat: -33.8688,
+        lon: 151.2093,
+      }
 
       const targetVector = new THREE.Vector3(0, 0, 0);
-      const position = this.calculateXYZFromLatLon(zero.lon, zero.lat);
+      const position = this.calculateXYZFromLatLon(ams.lat, ams.lon);
 
       const geometry = new THREE.SphereGeometry(2, 8, 8);
       const material = new THREE.MeshBasicMaterial({
@@ -326,15 +330,9 @@ class Globe {
       });
 
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(
-          position[0], 
-          position[1], 
-          position[2]
-      );
+      mesh.position.copy(position);
 
       mesh.lookAt(targetVector);
-
-      console.log(mesh.position);
 
       this.scene.add(mesh);
   }

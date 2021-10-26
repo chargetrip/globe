@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "module": "dist/module.js",
   "scripts": {
-    "watch": "parcel watch",
+    "watch": "parcel src/index.html",
     "build": "parcel build"
   },
   "devDependencies": {
