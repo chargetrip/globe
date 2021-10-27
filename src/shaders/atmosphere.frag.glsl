@@ -2,8 +2,13 @@ uniform vec3 color;
 varying vec3 vertexNormal;
 
 void main() {
-    float intensity = pow(0.8 - dot(vertexNormal, vec3(0, 0, 1.0)), 2.0);
-    float dropoff = dot(vertexNormal.xy, vec2(-1.0, 1.0)) * 1.1;
+    float atmoFade = dot(vertexNormal, vec3(0.0, 0.0, 1.0));
 
-    gl_FragColor = vec4(color * dropoff, 1.0) * intensity;
+    float upperAtmosphere = pow(0.85 - atmoFade , 2.0) / 2.0;
+    float lowerAtmosphere = smoothstep(0.0, 1.0, pow(0.82 - atmoFade , 48.0) / 40.0);
+    float atmosphere = lowerAtmosphere + upperAtmosphere;
+
+    float edgeFade = dot(vertexNormal.xy, vec2(-1.0, 1.0)) + 0.25;
+
+    gl_FragColor = vec4(color * edgeFade, 1.0) * atmosphere;
 }
