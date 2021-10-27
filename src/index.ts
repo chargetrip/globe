@@ -104,8 +104,8 @@ class Globe {
 
     this.camera.fov = 45;
     this.camera.aspect = container!.clientWidth / container!.clientHeight;
-    this.camera.near = 1;
-    this.camera.far = 2000;
+    this.camera.near = 100;
+    this.camera.far = 4000;
 
     this.camera.position.set(0, 0, 1800);
     this.camera.updateProjectionMatrix();
@@ -141,7 +141,7 @@ class Globe {
     const atmosphereMaterial = new THREE.ShaderMaterial({
       uniforms: {
         color: {
-          value: new THREE.Vector3(0.11, 0.2, 0.353),
+          value: new THREE.Color(0.215, 0.450, 0.725),
         },
       },
       vertexShader: atmosphereVertexShader,
