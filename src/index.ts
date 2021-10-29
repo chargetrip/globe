@@ -6,6 +6,8 @@ import baseSphereVertexShader from './shaders/baseSphere.vert.glsl';
 import baseSphereFragmentShader from './shaders/baseSphere.frag.glsl';
 import atmosphereVertexShader from './shaders/atmosphere.vert.glsl';
 import atmosphereFragmentShader from './shaders/atmosphere.frag.glsl';
+import dotsVertexShader from './shaders/dots.vert.glsl';
+import dotsFragmentShader from './shaders/dots.frag.glsl';
 
 const degreesToRadians = (degrees: number) => degrees * (Math.PI / 180);
 
@@ -158,11 +160,18 @@ class Globe {
   drawDotSphere = () => {
     const geometry = new THREE.CircleGeometry(2, 12);
     const matrix = new THREE.Matrix4();
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x2b5d96,
-      transparent: true,
-      opacity: 1.0,
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+	      time: { value: 1.0 },
+      },
+      fragmentShader: dotsFragmentShader,
+      vertexShader: dotsVertexShader,
     });
+    // const material = new THREE.MeshBasicMaterial({
+    //   color: 0x2b5d96,
+    //   transparent: true,
+    //   opacity: 1.0,
+    // });
 
     const instancedMesh = new THREE.InstancedMesh(
       geometry,
@@ -172,12 +181,16 @@ class Globe {
     // Offset to longitudally align with Prime Meridian
     instancedMesh.rotation.y -= (Math.PI / 2) - 0.02;
 
+    const color = new THREE.Color();
+
     for (let i = 0; i < this.globeConfig.dotSphere.numberOfDots; i += 1) {
       const configuredMatrix = this.configureDotMatrix(
         i,
         matrix,
         instancedMesh,
       );
+
+			instancedMesh.setColorAt(i, color.setHex(Math.random() * 0xffffff));
       instancedMesh.setMatrixAt(i, configuredMatrix);
     }
 
@@ -341,6 +354,11 @@ class Globe {
 
   animate = () => {
     requestAnimationFrame(this.animate);
+    // TODO: Dot layer should be accessible using `this` within the loop
+    //@ts-ignore
+    const currentTime = this.scene.children[2].material.uniforms.time.value;
+    //@ts-ignore
+    this.scene.children[2].material.uniforms.time.value = (currentTime + 0.01) % 1024;
     this.render();
   };
 
