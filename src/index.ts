@@ -4,9 +4,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Vector3 } from 'three';
 import baseSphereVertexShader from './shaders/baseSphere.vert.glsl';
 import baseSphereFragmentShader from './shaders/baseSphere.frag.glsl';
-
 import atmosphereVertexShader from './shaders/atmosphere.vert.glsl';
 import atmosphereFragmentShader from './shaders/atmosphere.frag.glsl';
+import dotsVertexShader from './shaders/dots.vert.glsl';
+import dotsFragmentShader from './shaders/dots.frag.glsl';
 
 const degreesToRadians = (degrees: number) => degrees * (Math.PI / 180);
 
@@ -104,8 +105,8 @@ class Globe {
 
     this.camera.fov = 45;
     this.camera.aspect = container!.clientWidth / container!.clientHeight;
-    this.camera.near = 1;
-    this.camera.far = 2000;
+    this.camera.near = 100;
+    this.camera.far = 4000;
 
     this.camera.position.set(0, 0, 1800);
     this.camera.updateProjectionMatrix();
@@ -124,7 +125,7 @@ class Globe {
     const material = new THREE.ShaderMaterial({
       uniforms: {
         color: {
-          value: new THREE.Vector3(0.11, 0.2, 0.353),
+          value: new THREE.Color(0.11, 0.2, 0.353),
         },
       },
       vertexShader: baseSphereVertexShader,
@@ -141,7 +142,7 @@ class Globe {
     const atmosphereMaterial = new THREE.ShaderMaterial({
       uniforms: {
         color: {
-          value: new THREE.Vector3(0.11, 0.2, 0.353),
+          value: new THREE.Color(0.215, 0.450, 0.725),
         },
       },
       vertexShader: atmosphereVertexShader,
@@ -151,7 +152,7 @@ class Globe {
     });
 
     const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-    atmosphere.scale.set(1.1, 1.1, 1.1);
+    atmosphere.scale.set(1.2, 1.2, 1.2);
 
     this.scene.add(atmosphere);
   }
@@ -159,18 +160,28 @@ class Globe {
   drawDotSphere = () => {
     const geometry = new THREE.CircleGeometry(2, 12);
     const matrix = new THREE.Matrix4();
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x3d689c,
-      transparent: true,
-      opacity: 0.5,
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+	      time: { value: 1.0 },
+      },
+      fragmentShader: dotsFragmentShader,
+      vertexShader: dotsVertexShader,
     });
+    // const material = new THREE.MeshBasicMaterial({
+    //   color: 0x2b5d96,
+    //   transparent: true,
+    //   opacity: 1.0,
+    // });
 
     const instancedMesh = new THREE.InstancedMesh(
       geometry,
       material,
       this.globeConfig.dotSphere.numberOfDots,
     );
+    // Offset to longitudally align with Prime Meridian
     instancedMesh.rotation.y -= (Math.PI / 2) - 0.02;
+
+    const color = new THREE.Color();
 
     for (let i = 0; i < this.globeConfig.dotSphere.numberOfDots; i += 1) {
       const configuredMatrix = this.configureDotMatrix(
@@ -178,6 +189,8 @@ class Globe {
         matrix,
         instancedMesh,
       );
+
+			instancedMesh.setColorAt(i, color.setHex(Math.random() * 0xffffff));
       instancedMesh.setMatrixAt(i, configuredMatrix);
     }
 
@@ -341,6 +354,11 @@ class Globe {
 
   animate = () => {
     requestAnimationFrame(this.animate);
+    // TODO: Dot layer should be accessible using `this` within the loop
+    //@ts-ignore
+    const currentTime = this.scene.children[2].material.uniforms.time.value;
+    //@ts-ignore
+    this.scene.children[2].material.uniforms.time.value = (currentTime + 0.01) % 1024;
     this.render();
   };
 
