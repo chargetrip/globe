@@ -100,8 +100,6 @@ class Globe {
       this.drawBaseSphere();
       this.drawDotSphere();
 
-      // this.drawUserLocation();
-
       this.drawPoint();
 
       this.animate();
