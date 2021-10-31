@@ -252,7 +252,6 @@ class Globe {
     );
     const offset = (ty * this.imageData.width + tx) * 4;
 
-    // Offset + 3 to get the alpha channel which we are interested in
     return this.imageData!.data[offset];
   };
 
