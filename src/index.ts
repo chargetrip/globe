@@ -355,11 +355,10 @@ class Globe {
     locations.forEach((location) => {
       const position = this.calculateXYZFromLatLon(location.lat, location.lon);
 
-      // Offset location position slightly, so the angle is not through the globe dots
-      position.y = position.y > 0 ? position.y + 2 : position.y - 2;
-
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.copy(position);
+
+      // Offset position to prevent shader intersection with globe dots
+      mesh.position.copy(position).multiplyScalar(1.0025);
       mesh.lookAt(targetVector);
 
       this.scene.add(mesh);
