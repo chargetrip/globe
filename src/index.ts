@@ -78,7 +78,7 @@ class Globe {
       dotSphere: {
         numberOfDots: 60000,
         alphaMap:
-          'https://images.ctfassets.net/fzn2n1nzq965/11064gUb2CgTJXKVwAt5J9/297a98a65d04d4fbb979072ce60466ab/map_fill-a78643e8.png',
+          'https://i.imgur.com/7e2kNjf.png', 
         color: 0x3d689c,
         opacity: 0.8,
         transparent: true,
@@ -127,7 +127,7 @@ class Globe {
   };
 
   drawBaseSphere = () => {
-    const geometry = new THREE.SphereGeometry(this.globeConfig.radius, 50, 50);
+    const geometry = new THREE.IcosahedronGeometry(this.globeConfig.radius, 11);
     const material = new THREE.ShaderMaterial({
       uniforms: {
         color: {
@@ -144,7 +144,7 @@ class Globe {
   };
 
   drawAtmosphere = () => {
-    const atmosphereGeometry = new THREE.SphereGeometry(this.globeConfig.radius, 50, 50);
+    const atmosphereGeometry = new THREE.IcosahedronGeometry(this.globeConfig.radius, 11);
     const atmosphereMaterial = new THREE.ShaderMaterial({
       uniforms: {
         color: {
@@ -179,9 +179,6 @@ class Globe {
       material,
       this.globeConfig.dotSphere.numberOfDots,
     );
-
-    // Offset to longitudally align with Prime Meridian
-    instancedMesh.rotation.y -= (Math.PI / 2) - 0.02;
 
     const color = new THREE.Color();
 
@@ -261,8 +258,7 @@ class Globe {
     );
     const offset = (ty * this.imageData.width + tx) * 4;
 
-    // Offset + 3 to get the alpha channel which we are interested in
-    return this.imageData!.data[offset + 3];
+    return this.imageData!.data[offset];
   };
 
   emod = (n: number, m: number): number => ((n % m) + m) % m;
