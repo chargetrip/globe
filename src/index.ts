@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-import { Vector3 } from 'three';
+import { CubicBezierCurve3, TubeBufferGeometry, Vector3 } from 'three';
+import { geoInterpolate } from 'd3-geo';
 
 import baseSphereVertexShader from './shaders/baseSphere.vert.glsl';
 import baseSphereFragmentShader from './shaders/baseSphere.frag.glsl';
@@ -16,6 +17,7 @@ import locationVertexShader from './shaders/location.vert.glsl';
 import locationFragmentShader from './shaders/location.frag.glsl';
 
 const degreesToRadians = (degrees: number) => degrees * (Math.PI / 180);
+const clamp = (num: number, min: number, max: number) => num <= min ? min : (num >= max ? max : num);
 
 export interface GlobeConfig {
     container: string;
@@ -101,6 +103,8 @@ class Globe {
       this.drawDotSphere();
 
       this.drawPoint();
+      this.drawArc();
+      this.drawBar();
 
       this.animate();
     }, 1000);
@@ -153,6 +157,7 @@ class Globe {
       },
       vertexShader: atmosphereVertexShader,
       fragmentShader: atmosphereFragmentShader,
+      transparent: true,
       blending: THREE.AdditiveBlending,
       side: THREE.BackSide,
     });
@@ -305,10 +310,10 @@ class Globe {
     });
   };
 
-  calculateXYZFromLatLon = (lat: number, lon: number): Vector3 => {
+  calculateVec3FromLatLon = (lat: number, lon: number, radius: number = this.globeConfig.radius): Vector3 => {
     const phi = degreesToRadians(90 - lat);
     const theta = degreesToRadians(lon + 180);
-    const rho = this.globeConfig.radius;
+    const rho = radius;
 
     const x = -(Math.sin(phi) * Math.cos(theta) * rho);
     const y = Math.cos(phi) * rho;
@@ -349,7 +354,7 @@ class Globe {
     ];
 
     locations.forEach((location) => {
-      const position = this.calculateXYZFromLatLon(location.lat, location.lon);
+      const position = this.calculateVec3FromLatLon(location.lat, location.lon);
 
       const mesh = new THREE.Mesh(geometry, material);
 
@@ -359,6 +364,61 @@ class Globe {
 
       this.scene.add(mesh);
     });
+  }
+
+  drawArc = () => {
+    const locations = [
+      {
+        lat: 52.3676,
+        lon: 4.9041,
+      },
+      {
+        lat: -34.6037,
+        lon: -58.3816,
+      },
+    ];
+
+    const start = this.calculateVec3FromLatLon(locations[0].lat, locations[0].lon);
+    const end = this.calculateVec3FromLatLon(locations[1].lat, locations[1].lon);
+
+    const arcHeight = start.distanceTo(end) * 0.25 + this.globeConfig.radius;
+
+    const interpolate = geoInterpolate([locations[0].lon, locations[0].lat], [locations[1].lon, locations[1].lat]);
+    const midCoord1 = interpolate(0.25);
+    const midCoord2 = interpolate(0.75);
+    const mid1 = this.calculateVec3FromLatLon(midCoord1[1], midCoord1[0], arcHeight);
+    const mid2 = this.calculateVec3FromLatLon(midCoord2[1], midCoord2[0], arcHeight);
+
+    const curve = new CubicBezierCurve3(start, mid1, mid2, end);
+    const geometry = new THREE.TubeBufferGeometry(curve, 44, 0.5, 8);
+    const material = new THREE.MeshBasicMaterial();
+    const mesh = new THREE.Mesh(geometry, material);
+    
+    this.scene.add(mesh);
+  }
+
+  drawBar = () => {
+    const targetVector = new THREE.Vector3(0, 0, 0);
+    const locations = [
+      {
+        lat: -33.8688,
+        lon: 151.2093,
+      }
+    ];
+
+    const position = this.calculateVec3FromLatLon(locations[0].lat, locations[0].lon);
+
+    const geometry = new THREE.CylinderGeometry(6, 6, 200);
+    const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+    const mesh = new THREE.Mesh( geometry, material );
+
+    // geometry.translate(0, 200, 0);
+
+    mesh.position.set(position.x, position.y, position.z);
+    mesh.geometry.rotateX((90 * Math.PI) / 180);
+    mesh.lookAt(targetVector);
+
+    this.scene.add( mesh );
   }
 
   animate = () => {
