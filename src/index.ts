@@ -404,13 +404,34 @@ class Globe {
     
     const curve = new CubicBezierCurve3(start, mid1, mid2, end);
     const geometry = new THREE.TubeBufferGeometry(curve, 44, 0.5, 8);
-    const material = new THREE.MeshBasicMaterial();
+    geometry.computeBoundingBox();
+    
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        color1: {
+          value: new THREE.Vector4(1.0, 0.0, 1.0, 1.0)
+        },
+        color2: {
+          value: new THREE.Vector4(1.0, 1.0, 0.0, 1.0)
+        },
+        bboxMin: {
+          value: geometry.boundingBox.min
+        },
+        bboxMax: {
+          value: geometry.boundingBox.max
+        }
+      },
+      fragmentShader: barFragmentShader,
+      vertexShader: barVertexShader,
+      transparent: true,
+    });
+    
     const mesh = new THREE.Mesh(geometry, material);
     this.scene.add(mesh);
 
     // Set the draw range to show only the first vertex
-    // geometry.setDrawRange(0, 1);
-    // this.drawAnimatedLine();
+    geometry.setDrawRange(0, 1);
+    this.drawAnimatedLine(geometry);
   }
 
   drawBar = () => {
@@ -455,6 +476,29 @@ class Globe {
     mesh.lookAt(targetVector);
 
     this.scene.add( mesh );
+  }
+
+  startTime = 0;
+  inAnimation = true
+
+  drawAnimatedLine = (geometry: THREE.TubeBufferGeometry) => {
+    let drawRangeCount = geometry.drawRange.count;
+    const timeElapsed = performance.now() - this.startTime;
+
+    const progress = timeElapsed / 2500;
+
+    drawRangeCount = progress * 3000;
+
+    if (progress < 0.999) {
+      this.inAnimation ? geometry.setDrawRange(0, drawRangeCount) : geometry.setDrawRange(drawRangeCount, 2700);
+    } else {
+      this.startTime = performance.now();
+      this.inAnimation = !this.inAnimation;
+    }
+
+    requestAnimationFrame(() => {
+      this.drawAnimatedLine(geometry);
+    });
   }
 
   animate = () => {
