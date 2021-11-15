@@ -1,8 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-import { CubicBezierCurve3, TubeBufferGeometry, Vector3 } from 'three';
+import { CubicBezierCurve3, Vector3 } from 'three';
 import { geoInterpolate } from 'd3-geo';
+
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
+import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 
 import baseSphereVertexShader from './shaders/baseSphere.vert.glsl';
 import baseSphereFragmentShader from './shaders/baseSphere.frag.glsl';
@@ -15,6 +19,12 @@ import dotsFragmentShader from './shaders/dots.frag.glsl';
 
 import locationVertexShader from './shaders/location.vert.glsl';
 import locationFragmentShader from './shaders/location.frag.glsl';
+
+import barVertexShader from './shaders/bar.vert.glsl';
+import barFragmentShader from './shaders/bar.frag.glsl';
+
+import arcVertexShader from './shaders/arc.vert.glsl';
+import arcFragmentShader from './shaders/arc.frag.glsl';
 
 const degreesToRadians = (degrees: number) => degrees * (Math.PI / 180);
 const clamp = (num: number, min: number, max: number) => num <= min ? min : (num >= max ? max : num);
@@ -389,12 +399,18 @@ class Globe {
     const mid1 = this.calculateVec3FromLatLon(midCoord1[1], midCoord1[0], arcHeight);
     const mid2 = this.calculateVec3FromLatLon(midCoord2[1], midCoord2[0], arcHeight);
 
+    const positions = [];
+    const colors = [];
+    
     const curve = new CubicBezierCurve3(start, mid1, mid2, end);
     const geometry = new THREE.TubeBufferGeometry(curve, 44, 0.5, 8);
     const material = new THREE.MeshBasicMaterial();
     const mesh = new THREE.Mesh(geometry, material);
-    
     this.scene.add(mesh);
+
+    // Set the draw range to show only the first vertex
+    // geometry.setDrawRange(0, 1);
+    // this.drawAnimatedLine();
   }
 
   drawBar = () => {
@@ -408,13 +424,33 @@ class Globe {
 
     const position = this.calculateVec3FromLatLon(locations[0].lat, locations[0].lon);
 
-    const geometry = new THREE.CylinderGeometry(6, 6, 200);
-    const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+    const geometry = new THREE.CylinderGeometry(4, 4, 100);
+    geometry.computeBoundingBox();
+    
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        color1: {
+          value: new THREE.Vector4(1.0, 1.0, 1.0, 0.0)
+        },
+        color2: {
+          value: new THREE.Vector4(1.0, 1.0, 1.0, 0.5)
+        },
+        bboxMin: {
+          value: geometry.boundingBox.min
+        },
+        bboxMax: {
+          value: geometry.boundingBox.max
+        }
+      },
+      fragmentShader: barFragmentShader,
+      vertexShader: barVertexShader,
+      transparent: true,
+    });
+
     const mesh = new THREE.Mesh( geometry, material );
 
-    // geometry.translate(0, 200, 0);
-
     mesh.position.set(position.x, position.y, position.z);
+    mesh.position.copy(position).multiplyScalar(1.08);
     mesh.geometry.rotateX((90 * Math.PI) / 180);
     mesh.lookAt(targetVector);
 
