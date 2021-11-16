@@ -1,8 +1,13 @@
-uniform vec4 color1;
-uniform vec4 color2;
+uniform float fraction;
 
-varying vec3 vUv;
+varying float vDistance;
+varying vec3 vNormal;
+varying vec3 vViewPosition;
 
 void main() {
-    gl_FragColor = mix(color1, color2, vUv.y);
+	if ( vDistance > fraction ) discard;
+
+	vec3 color = vec3( 0.25, 0.5, 1.0 );
+
+	gl_FragColor = vec4(color, 1.0);
 }

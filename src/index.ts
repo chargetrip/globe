@@ -376,6 +376,8 @@ class Globe {
     });
   }
 
+  endDrawRange;
+
   drawArc = () => {
     const locations = [
       {
@@ -398,9 +400,6 @@ class Globe {
     const midCoord2 = interpolate(0.75);
     const mid1 = this.calculateVec3FromLatLon(midCoord1[1], midCoord1[0], arcHeight);
     const mid2 = this.calculateVec3FromLatLon(midCoord2[1], midCoord2[0], arcHeight);
-
-    const positions = [];
-    const colors = [];
     
     const curve = new CubicBezierCurve3(start, mid1, mid2, end);
     const geometry = new THREE.TubeBufferGeometry(curve, 44, 0.5, 8);
@@ -430,8 +429,9 @@ class Globe {
     this.scene.add(mesh);
 
     // Set the draw range to show only the first vertex
+    this.endDrawRange = geometry.index.count
     geometry.setDrawRange(0, 1);
-    this.drawAnimatedLine(geometry);
+    this.drawAnimatedLine(mesh);
   }
 
   drawBar = () => {
@@ -478,27 +478,30 @@ class Globe {
     this.scene.add( mesh );
   }
 
+  
   startTime = 0;
   inAnimation = true
 
-  drawAnimatedLine = (geometry: THREE.TubeBufferGeometry) => {
-    let drawRangeCount = geometry.drawRange.count;
+  drawAnimatedLine = (mesh: THREE.Mesh) => {
+    requestAnimationFrame(() => {
+      this.drawAnimatedLine(mesh);
+    });
+
     const timeElapsed = performance.now() - this.startTime;
-
-    const progress = timeElapsed / 2500;
-
-    drawRangeCount = progress * 3000;
-
-    if (progress < 0.999) {
-      this.inAnimation ? geometry.setDrawRange(0, drawRangeCount) : geometry.setDrawRange(drawRangeCount, 2700);
-    } else {
+    const progress = timeElapsed / 1000;
+    
+    const drawRange = this.inAnimation ? 
+      Math.round(progress * this.endDrawRange) : 
+      Math.round((progress * this.endDrawRange) / 3) * 3;
+    
+    if (progress < 1) {
+      this.inAnimation ? 
+        mesh.geometry.setDrawRange(0, drawRange) :
+        mesh.geometry.setDrawRange(drawRange, this.endDrawRange);
+    } else if (progress > 2.5) {
       this.startTime = performance.now();
       this.inAnimation = !this.inAnimation;
     }
-
-    requestAnimationFrame(() => {
-      this.drawAnimatedLine(geometry);
-    });
   }
 
   animate = () => {
