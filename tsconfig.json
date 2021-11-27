@@ -1,0 +1,100 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "esnext",
+      "strict": true,
+      "jsx": "preserve",
+      "importHelpers": true,
+      "allowJs": true,
+      "checkJs": true,
+      "resolveJsonModule": true,
+      "noImplicitAny": false,
+      "moduleResolution": "node",
+      "experimentalDecorators": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "sourceMap": true,
+      "baseUrl": ".",
+      "types": [
+        "webpack-env",
+        "jest",
+        "vite"
+      ],
+      "paths": {
+        "@/*": [
+          "src/*"
+        ]
+      },
+      "lib": [
+        "es6",
+        "es5",
+        "esnext",
+        "dom",
+        "dom.iterable",
+        "scripthost"
+      ]
+    },
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.vue",
+      "tests/**/*.ts",
+      "tests/**/*.tsx"
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+  }
+  
+
+
+// {
+//     "compilerOptions": {
+//       "baseUrl": ".",
+//       "paths": {
+//         "~/*": ["./src/*"]
+//       },
+//       "module": "commonjs",
+//       "moduleResolution": "node",
+//       "newLine": "LF",
+//       "outDir": "./lib/",
+//       "target": "es5",
+//       "sourceMap": true,
+//       "declaration": true,
+//       "jsx": "preserve",
+//       "lib": [
+//         "es2017",
+//         "dom"
+//       ],
+//       "strict": true,
+//       "noUnusedLocals": true,
+//       "noUnusedParameters": true,
+//       "noImplicitReturns": true,
+//       "noFallthroughCasesInSwitch": true
+//     },
+//     "include": [
+//       "src/**/*"
+//     ],
+//     "exclude": [
+//       ".git",
+//       "node_modules"
+//     ]
+//   }
+
+// {
+//     "include": ["src/**/*"],
+//     "compilerOptions": {
+//         "noImplicitAny": true,
+//         "removeComments": true,
+//         "preserveConstEnums": true,
+//         "sourceMap": true,
+//         "baseUrl": "./src",
+//         "paths": {
+//           "~*": ["./*"]
+//         },
+//         "typeRoots": [
+//             "./src/types",
+//             "node_modules/@types"
+//         ]
+//     }
+// }
