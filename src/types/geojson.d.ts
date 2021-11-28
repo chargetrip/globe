@@ -1,13 +1,6 @@
-export enum GeoJSONType {
-    Point,
-    Linestring,
-    Polygon,
-    MultiPoint,
-    MultiLineString,
-    MultiPolygon
-}
+import { GeoJSONType } from '../enums/geojson';
 
-declare interface Geometry {
+export interface Geometry {
     type: GeoJSONType,
     coordinates: Array<number>
 }

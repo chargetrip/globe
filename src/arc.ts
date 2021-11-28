@@ -101,25 +101,3 @@ export default class Arc {
       };
     }
 }
-
-// Sample implementation
-// const arc = new Arc({
-//   startLocation: {
-//     type: 'Feature',
-//     geometry: {
-//       type: GeoJSONType.Point,
-//       coordinates: [
-
-//       ],
-//     },
-//   },
-//   endLocation: {
-//     type: 'Feature',
-//     geometry: {
-//       type: GeoJSONType.Point,
-//       coordinates: [
-
-//       ],
-//     },
-//   },
-// });

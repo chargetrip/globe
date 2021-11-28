@@ -1,6 +1,6 @@
 import GlobeScene from './globe-scene';
 import Arc from './arc';
-import { GeoJSONType } from './types/geojson';
+import { GeoJSONType } from './enums/geojson';
 
 const container = 'globe-container';
 
