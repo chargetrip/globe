@@ -2,6 +2,7 @@ import GlobeScene from './components/scene';
 import Arc from './components/arc';
 import { GeoJSONType } from './enums/geojson';
 import Marker from './components/marker';
+import Bar from './components/bar';
 
 const container = 'globe-container';
 
@@ -28,6 +29,18 @@ const arc = new Arc({
   },
 });
 
+const bar = new Bar({
+  location: {
+    type: 'Feature',
+    geometry: {
+      type: GeoJSONType.Point,
+      coordinates: [
+        52.3676, 4.9041,
+      ],
+    },
+  },
+});
+
 const marker = new Marker({
   location: {
     type: 'Feature',
@@ -41,3 +54,4 @@ const marker = new Marker({
 });
 
 globe.addMarker(marker);
+globe.addBar(bar);

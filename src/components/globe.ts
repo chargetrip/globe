@@ -1,15 +1,15 @@
 import * as THREE from 'three';
-import { getImageData } from './utils/image-data';
-import configureDotMatrix from './utils/globe-dots';
+import { getImageData } from '../utils/image-data';
+import configureDotMatrix from '../utils/globe-dots';
 
-import baseSphereVertexShader from './shaders/baseSphere.vert.glsl';
-import baseSphereFragmentShader from './shaders/baseSphere.frag.glsl';
+import baseSphereVertexShader from '../shaders/baseSphere.vert.glsl';
+import baseSphereFragmentShader from '../shaders/baseSphere.frag.glsl';
 
-import atmosphereVertexShader from './shaders/atmosphere.vert.glsl';
-import atmosphereFragmentShader from './shaders/atmosphere.frag.glsl';
+import atmosphereVertexShader from '../shaders/atmosphere.vert.glsl';
+import atmosphereFragmentShader from '../shaders/atmosphere.frag.glsl';
 
-import dotsVertexShader from './shaders/dots.vert.glsl';
-import dotsFragmentShader from './shaders/dots.frag.glsl';
+import dotsVertexShader from '../shaders/dots.vert.glsl';
+import dotsFragmentShader from '../shaders/dots.frag.glsl';
 
 export default class Globe {
   drawBaseSphere(): THREE.Mesh {

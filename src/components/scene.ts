@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Arc from './arc';
-import Globe from '../globe';
+import Bar from './bar';
+import Globe from './globe';
 import Marker from './marker';
 
 export default class GlobeScene {
@@ -9,8 +10,8 @@ export default class GlobeScene {
   #camera: THREE.PerspectiveCamera;
   #renderer: THREE.WebGLRenderer;
 
-  #marker: Marker;
-  #markerMesh: THREE.Mesh;
+  #marker: Marker | null = null;
+  #markerMesh: THREE.Mesh | null = null;
 
   container: string;
 
@@ -90,5 +91,10 @@ export default class GlobeScene {
     this.#marker = marker;
     this.#markerMesh = markerMeshes[0];
     markerMeshes.forEach((mesh) => this.#scene.add(mesh));
+  }
+
+  addBar(bar: Bar): void {
+    const barMesh = bar.draw();
+    this.#scene.add(barMesh);
   }
 }
