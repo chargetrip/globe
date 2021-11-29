@@ -24,6 +24,7 @@ module.exports = {
       'always',
       { exceptAfterSingleLine: true },
     ],
+    'class-methods-use-this': 'off',
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-shadow': ['error'],
