@@ -1,7 +1,10 @@
 import * as THREE from 'three';
+import { Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import GlobeCamera from '../controllers/camera';
 import globeDefaults from '../defaults/globe-defaults';
 import { GlobeConfig } from '../types/globe';
+import { calculateVec3FromLatLon } from '../utils/threejs-converters';
 
 import Arc from './arc';
 import Bar from './bar';
@@ -14,11 +17,12 @@ export default class GlobeScene {
   #renderer: THREE.WebGLRenderer;
 
   #markerMeshes: THREE.Mesh[] = [];
-
   #dotSphereMesh: THREE.Mesh | null = null;
 
-  globeConfig: GlobeConfig;
-  container: string;
+  readonly globeConfig: GlobeConfig;
+  readonly container: string;
+
+  camera: GlobeCamera;
 
   constructor(
     container: string,
@@ -48,6 +52,7 @@ export default class GlobeScene {
     };
 
     this.container = container;
+    this.camera = new GlobeCamera(this.#camera);
 
     this.init();
     this.drawGlobe();
@@ -98,11 +103,6 @@ export default class GlobeScene {
 
   private animate(): void {
     requestAnimationFrame(this.animate.bind(this));
-
-    // if (this.#marker && this.#marker?.isAnimating) {
-    //   const currentTime = this.#markerMesh.material.uniforms.time.value;
-    //   this.#markerMesh.material.uniforms.time.value = (currentTime - 0.015) % 1024;
-    // }
 
     this.#markerMeshes.forEach((marker, idx) => {
       const currentTime = marker.material.uniforms.time.value;

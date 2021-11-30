@@ -10,8 +10,6 @@ import markerFragmentShader from '../shaders/marker.frag.glsl';
 export default class Marker {
   readonly config: MarkerConfig;
 
-  isAnimating = true;
-
   constructor(config: MarkerConfig) {
     this.config = {
       ...markerDefaults,
@@ -49,13 +47,5 @@ export default class Marker {
     mesh.lookAt(targetVector);
 
     return mesh;
-  }
-
-  startAnimation(): void {
-    this.isAnimating = true;
-  }
-
-  stopAnimation(): void {
-    this.isAnimating = false;
   }
 }

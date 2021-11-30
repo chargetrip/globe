@@ -80,8 +80,12 @@ const marker2 = new Marker({
   },
 });
 
-// globe.addArc(arc);
 globe.addMarkers([marker, marker2]);
 globe.addBar(bar);
 globe.addBar(bar2);
-// globe.addArc(arc);
+
+globe.camera.moveTo(59.9139, 10.7522, 1200);
+
+setTimeout(() => {
+  globe.camera.moveTo(-34.6037, -58.3816, 1200);
+}, 5000);
