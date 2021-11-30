@@ -1,34 +1,11 @@
 import GlobeScene from './components/scene';
-import Arc from './components/arc';
-import { GeoJSONType } from './enums/geojson';
+import GeoJSONType from './enums/geojson';
 import Marker from './components/marker';
 import Bar from './components/bar';
 
 const container = 'globe-container';
 
 const globe = new GlobeScene(container);
-
-const arc = new Arc({
-  startLocation: {
-    type: 'Feature',
-    geometry: {
-      type: GeoJSONType.Point,
-      coordinates: [
-        -58.3816, -34.6037,
-      ],
-    },
-  },
-  endLocation: {
-    type: 'Feature',
-    geometry: {
-      type: GeoJSONType.Point,
-      coordinates: [
-        4.9041, 52.3676,
-      ],
-    },
-  },
-  startColor: '#FF0000',
-});
 
 const bar = new Bar({
   location: {
@@ -65,7 +42,7 @@ const bar2 = new Bar({
       ],
     },
   },
-  height: 125,
+  height: 200,
 });
 
 const marker2 = new Marker({
@@ -85,7 +62,3 @@ globe.addBar(bar);
 globe.addBar(bar2);
 
 globe.camera.moveTo(59.9139, 10.7522, 1200);
-
-setTimeout(() => {
-  globe.camera.moveTo(-34.6037, -58.3816, 1200);
-}, 5000);

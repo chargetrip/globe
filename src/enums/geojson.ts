@@ -1,4 +1,4 @@
-export enum GeoJSONType {
+enum GeoJSONType {
     Point,
     Linestring,
     Polygon,
@@ -6,3 +6,5 @@ export enum GeoJSONType {
     MultiLineString,
     MultiPolygon
 }
+
+export default GeoJSONType;

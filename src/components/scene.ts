@@ -1,10 +1,8 @@
 import * as THREE from 'three';
-import { Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import GlobeCamera from '../controllers/camera';
 import globeDefaults from '../defaults/globe-defaults';
 import { GlobeConfig } from '../types/globe';
-import { calculateVec3FromLatLon } from '../utils/threejs-converters';
 
 import Arc from './arc';
 import Bar from './bar';
@@ -104,7 +102,7 @@ export default class GlobeScene {
   private animate(): void {
     requestAnimationFrame(this.animate.bind(this));
 
-    this.#markerMeshes.forEach((marker, idx) => {
+    this.#markerMeshes.forEach((marker) => {
       const currentTime = marker.material.uniforms.time.value;
       marker.material.uniforms.time.value = (currentTime - 0.015) % 1024;
     });
