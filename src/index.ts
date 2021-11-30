@@ -27,6 +27,7 @@ const arc = new Arc({
       ],
     },
   },
+  startColor: '#FF0000',
 });
 
 const bar = new Bar({
@@ -39,6 +40,7 @@ const bar = new Bar({
       ],
     },
   },
+  height: 75,
 });
 
 const marker = new Marker({
@@ -53,5 +55,33 @@ const marker = new Marker({
   },
 });
 
-globe.addMarker(marker);
+const bar2 = new Bar({
+  location: {
+    type: 'Feature',
+    geometry: {
+      type: GeoJSONType.Point,
+      coordinates: [
+        59.9139, 10.7522,
+      ],
+    },
+  },
+  height: 125,
+});
+
+const marker2 = new Marker({
+  location: {
+    type: 'Feature',
+    geometry: {
+      type: GeoJSONType.Point,
+      coordinates: [
+        59.9139, 10.7522,
+      ],
+    },
+  },
+});
+
+// globe.addArc(arc);
+globe.addMarkers([marker, marker2]);
 globe.addBar(bar);
+globe.addBar(bar2);
+// globe.addArc(arc);

@@ -1,5 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import globeDefaults from '../defaults/globe-defaults';
+import { GlobeConfig } from '../types/globe';
+
 import Arc from './arc';
 import Bar from './bar';
 import Globe from './globe';
@@ -10,19 +13,39 @@ export default class GlobeScene {
   #camera: THREE.PerspectiveCamera;
   #renderer: THREE.WebGLRenderer;
 
-  #marker: Marker | null = null;
-  #markerMesh: THREE.Mesh | null = null;
+  #markerMeshes: THREE.Mesh[] = [];
 
+  #dotSphereMesh: THREE.Mesh | null = null;
+
+  globeConfig: GlobeConfig;
   container: string;
 
   constructor(
     container: string,
+    globeConfig: GlobeConfig = globeDefaults,
     antialias = true,
     alpha = true,
   ) {
     this.#scene = new THREE.Scene();
     this.#camera = new THREE.PerspectiveCamera();
     this.#renderer = new THREE.WebGLRenderer({ antialias, alpha });
+
+    this.globeConfig = {
+      ...globeDefaults,
+      ...globeConfig,
+      baseSphere: {
+        ...globeDefaults.baseSphere,
+        ...globeConfig.baseSphere,
+      },
+      atmosphere: {
+        ...globeDefaults.atmosphere,
+        ...globeConfig.atmosphere,
+      },
+      dotSphere: {
+        ...globeDefaults.dotSphere,
+        ...globeConfig.dotSphere,
+      },
+    };
 
     this.container = container;
 
@@ -57,21 +80,38 @@ export default class GlobeScene {
   }
 
   private drawGlobe(): void {
-    const globe = new Globe();
-    const baseSphere = globe.drawBaseSphere();
-    const atmosphere = globe.drawAtmosphere();
+    const globe = new Globe(this.globeConfig);
 
+    const baseSphere = globe.drawBaseSphere();
     this.#scene.add(baseSphere);
-    this.#scene.add(atmosphere);
-    globe.drawDotSphere().then((dotSphere) => this.#scene.add(dotSphere));
+
+    if (this.globeConfig.atmosphere?.render) {
+      const atmosphere = globe.drawAtmosphere();
+      this.#scene.add(atmosphere);
+    }
+
+    globe.drawDotSphere().then((dotSphere) => {
+      this.#dotSphereMesh = dotSphere;
+      this.#scene.add(dotSphere);
+    });
   }
 
   private animate(): void {
     requestAnimationFrame(this.animate.bind(this));
 
-    if (this.#marker && this.#marker.isAnimating && this.#markerMesh) {
-      const currentTime = this.#markerMesh.material.uniforms.time.value;
-      this.#markerMesh.material.uniforms.time.value = (currentTime + 0.015) % 1024;
+    // if (this.#marker && this.#marker?.isAnimating) {
+    //   const currentTime = this.#markerMesh.material.uniforms.time.value;
+    //   this.#markerMesh.material.uniforms.time.value = (currentTime - 0.015) % 1024;
+    // }
+
+    this.#markerMeshes.forEach((marker, idx) => {
+      const currentTime = marker.material.uniforms.time.value;
+      marker.material.uniforms.time.value = (currentTime - 0.015) % 1024;
+    });
+
+    if (this.#dotSphereMesh && this.globeConfig.animates) {
+      const currentTime = this.#dotSphereMesh.material.uniforms.time.value;
+      this.#dotSphereMesh.material.uniforms.time.value = (currentTime + 0.01) % 1024;
     }
 
     this.render();
@@ -86,11 +126,15 @@ export default class GlobeScene {
     this.#scene.add(arcMesh);
   }
 
-  addMarker(marker: Marker): void {
-    const markerMeshes = marker.draw();
-    this.#marker = marker;
-    this.#markerMesh = markerMeshes[0];
-    markerMeshes.forEach((mesh) => this.#scene.add(mesh));
+  addMarkers(markers: Marker | Marker[]): void {
+    let localMarkers = markers;
+    if (!Array.isArray(markers)) { localMarkers = [markers]; }
+
+    (localMarkers as Marker[]).forEach((marker) => {
+      const mesh = marker.draw();
+      this.#markerMeshes.push(mesh);
+      this.#scene.add(mesh);
+    });
   }
 
   addBar(bar: Bar): void {

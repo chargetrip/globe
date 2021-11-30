@@ -3,5 +3,10 @@ import { GeoJSON } from './geojson';
 export interface BarConfig {
     location: GeoJSON,
     startColor?: string,
-    endColor?: string
+    startColorOpacity?: number,
+    endColor?: string,
+    endColorOpacity?: number,
+    radiusTop?: number,
+    radiusBottom?: number,
+    height?: number,
 }

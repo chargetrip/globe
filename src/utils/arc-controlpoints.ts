@@ -15,7 +15,7 @@ export default function calculateArcControlPoints(config: ArcConfig): ControlPoi
 
   const startVec3 = calculateVec3FromLatLon(startCoords.lat, startCoords.lon, 600);
   const endVec3 = calculateVec3FromLatLon(endCoords.lat, endCoords.lon, 600);
-  const arcHeight = startVec3.distanceTo(endVec3) * 0.25 + 600;
+  const arcHeight = startVec3.distanceTo(endVec3) * config.height! + 600;
 
   const interpolate = geoInterpolate(
     [startCoords.lon, startCoords.lat],

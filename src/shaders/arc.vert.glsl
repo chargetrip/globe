@@ -1,16 +1,9 @@
-attribute float distance;
+uniform vec3 bboxMin;
+uniform vec3 bboxMax;
 
-varying float vDistance;
-varying vec3 vNormal;
-varying vec3 vViewPosition;
+varying vec3 vUv;
 
 void main() {
-	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-
-	vDistance = distance;
-	vNormal = normalize( normalMatrix * normal );
-	vViewPosition = - mvPosition.xyz;
-
-	gl_Position = projectionMatrix * mvPosition;
-
+    vUv.z = (position.z - bboxMin.z) / (bboxMax.z - bboxMin.z);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }

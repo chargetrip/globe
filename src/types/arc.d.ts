@@ -5,7 +5,11 @@ export interface ArcConfig {
     startLocation: GeoJSON,
     endLocation: GeoJSON,
     startColor?: string,
+    startColorOpacity?: number,
     endColor?: string
+    endColorOpacity?: number,
+    height?: number,
+    radius?: number
 }
 
 export interface ControlPoints {

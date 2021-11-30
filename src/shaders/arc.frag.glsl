@@ -1,13 +1,8 @@
-uniform float fraction;
+uniform vec4 startColor;
+uniform vec4 endColor;
 
-varying float vDistance;
-varying vec3 vNormal;
-varying vec3 vViewPosition;
+varying vec3 vUv;
 
 void main() {
-	if ( vDistance > fraction ) discard;
-
-	vec3 color = vec3( 0.25, 0.5, 1.0 );
-
-	gl_FragColor = vec4(color, 1.0);
+	gl_FragColor = mix(startColor, endColor, vUv.z);
 }

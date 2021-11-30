@@ -1,4 +1,6 @@
-uniform vec3 color;
+uniform vec3 colorDay;
+uniform vec3 colorNight;
+
 varying vec3 vertexNormal;
 
 void main() {
@@ -8,8 +10,8 @@ void main() {
     // Map dropoff to a range of [0.0, 1.0], as the dot product is [-1.0, 1.0]
     float dropoff = dot(vertexNormal.xy, vec2(-1.0, 1.0)) / 2.0 + 0.5;
 
-    vec3 colorDay = vec3(0.137, 0.290, 0.454);
-    vec3 colorNight = vec3(0.050, 0.058, 0.074);
+    vec3 colorDay = colorDay;
+    vec3 colorNight = colorNight;
 
     vec3 color = mix(colorNight, colorDay, smoothstep(0.2, 1.0, dropoff));
 

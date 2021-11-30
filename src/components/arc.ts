@@ -1,18 +1,23 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as THREE from 'three';
 import { CubicBezierCurve3 } from 'three';
 import { hexToVec3 } from '../utils/threejs-converters';
 import { ArcConfig } from '../types';
 import calculateArcControlPoints from '../utils/arc-controlpoints';
+import arcDefaults from '../defaults/arc-defaults';
 
 import arcVertexShader from '../shaders/arc.vert.glsl';
 import arcFragmentShader from '../shaders/arc.frag.glsl';
 
 // TODO: <Wouter> Replace 600 in this file with globe radius that is defined outside of this class
 export default class Arc {
-  config: ArcConfig
+  readonly config: ArcConfig
 
   constructor(config: ArcConfig) {
-    this.config = config;
+    this.config = {
+      ...arcDefaults,
+      ...config,
+    };
   }
 
   draw(): THREE.Mesh {
@@ -24,11 +29,10 @@ export default class Arc {
       controlPoints.end,
     );
 
-    const { startColor, endColor } = this.config;
-    const vec3StartColor = hexToVec3(startColor ?? '#FF0000') ?? new THREE.Vector3(1.0, 0.0, 1.0);
-    const vec3EndColor = hexToVec3(endColor ?? '#FFF000') ?? new THREE.Vector3(1.0, 1.0, 0.0);
+    const vec3StartColor = hexToVec3(this.config.startColor!) ?? new THREE.Vector3(1.0, 0.0, 1.0);
+    const vec3EndColor = hexToVec3(this.config.endColor!) ?? new THREE.Vector3(1.0, 1.0, 0.0);
 
-    const geometry = new THREE.TubeBufferGeometry(curve, 44, 0.5, 8);
+    const geometry = new THREE.TubeBufferGeometry(curve, 44, this.config.radius!, 8);
     geometry.computeBoundingBox();
 
     if (!geometry.boundingBox) { throw Error('Globe - size of arc is unknown'); }
@@ -36,10 +40,20 @@ export default class Arc {
     const material = new THREE.ShaderMaterial({
       uniforms: {
         startColor: {
-          value: new THREE.Vector4(vec3StartColor.x, vec3StartColor.y, vec3StartColor.z, 1.0),
+          value: new THREE.Vector4(
+            vec3StartColor.x,
+            vec3StartColor.y,
+            vec3StartColor.z,
+            this.config.startColorOpacity!,
+          ),
         },
         endColor: {
-          value: new THREE.Vector4(vec3EndColor.x, vec3EndColor.y, vec3EndColor.z, 1.0),
+          value: new THREE.Vector4(
+            vec3EndColor.x,
+            vec3EndColor.y,
+            vec3EndColor.z,
+            this.config.endColorOpacity!,
+          ),
         },
         bboxMin: {
           value: geometry.boundingBox.min,
