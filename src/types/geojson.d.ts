@@ -1,4 +1,4 @@
-import { GeoJSONType } from '../enums/geojson';
+import GeoJSONType from '../enums/geojson';
 
 export interface Geometry {
     type: GeoJSONType,
