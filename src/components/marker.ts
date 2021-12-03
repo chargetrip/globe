@@ -6,6 +6,7 @@ import markerDefaults from '../defaults/marker-defaults';
 
 import markerVertexShader from '../shaders/marker.vert.glsl';
 import markerFragmentShader from '../shaders/marker.frag.glsl';
+import { randMinMax } from '../utils/time';
 
 export default class Marker {
   readonly config: MarkerConfig;
@@ -26,7 +27,7 @@ export default class Marker {
         circleRadius: { value: this.config.circleRadius },
         borderInnerRadius: { value: this.config.borderInnerRadius },
         borderOuterRadius: { value: this.config.borderOuterRadius },
-        time: { value: 1.0 },
+        time: { value: randMinMax(0, 10) },
       },
       fragmentShader: markerFragmentShader,
       vertexShader: markerVertexShader,
