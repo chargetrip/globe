@@ -15,7 +15,7 @@ const globeDefaults: GlobeConfig = {
     numberOfDots: 60_000,
     dotSize: 2,
     alphaMap: 'https://i.imgur.com/7e2kNjf.png',
-    color: '#54545C', // vec3(0.168, 0.364, 0.588)
+    color: '#97979F',
     opacity: 0.8,
   },
 };
