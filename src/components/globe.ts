@@ -75,12 +75,13 @@ export default class Globe {
     const material = new THREE.ShaderMaterial({
       uniforms: {
         time: {
-          value: 1.0,
+          value: 5.0,
         },
         color: {
           value: hexToVec3(this.config.dotSphere!.color!),
         },
       },
+      transparent: true,
       fragmentShader: dotsFragmentShader,
       vertexShader: dotsVertexShader,
     });
@@ -101,7 +102,7 @@ export default class Globe {
         instancedMesh,
       );
 
-      instancedMesh.setColorAt(i, color.setHex(Math.random() * 0xffffff));
+      instancedMesh.setColorAt(i, color.setHex(Math.floor(Math.random() * 0xffffff)));
       instancedMesh.setMatrixAt(i, configuredMatrix);
     }
 
