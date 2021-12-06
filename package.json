@@ -16,13 +16,13 @@
     "@types/d3-geo": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
+    "@parcel/transformer-glsl": "^2.0.1",
     "eslint": "^8.3.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.3",
     "parcel": "latest"
   },
   "dependencies": {
-    "@parcel/transformer-glsl": "^2.0.1",
     "@types/three": "^0.133.1",
     "d3-geo": "^3.0.1",
     "three": "^0.133.1",
