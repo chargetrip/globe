@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { BarConfig } from '../types/bar';
+import type { BarConfig } from '../types/bar';
 import { calculateVec3FromLatLon, hexToVec3 } from '../utils/threejs-converters';
 
 import barVertexShader from '../shaders/bar.vert.glsl';
