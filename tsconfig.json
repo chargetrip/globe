@@ -2,13 +2,15 @@
   "compilerOptions": {
     "target": "es2021",
     "lib": ["es2021", "dom"],
-    "esModuleInterop": true
+    "rootDirs": ["src"],
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "typeRoots": [
+        "typings"
+    ]
   },
   "exclude": [
     "node_modules",
-    "dist",
-    "src/shaders/**/*",
-    "src/shaders/*.vert.glsl",
-    "src/shaders/*.frag.glsl"
+    "dist"
   ]
 }
