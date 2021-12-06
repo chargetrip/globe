@@ -22,10 +22,10 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.3",
     "parcel": "latest",
-    "typescript": "^4.5.2",
-    "three": "^0.133.1"
+    "typescript": "^4.5.2"
   },
   "dependencies": {
-    "d3-geo": "^3.0.1"
+    "d3-geo": "^3.0.1",
+    "three": "^0.133.1"
   }
 }
