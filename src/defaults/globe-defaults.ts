@@ -1,4 +1,4 @@
-import { GlobeConfig } from '../types/globe';
+import type { GlobeConfig } from '../types/globe';
 
 const globeDefaults: GlobeConfig = {
   radius: 600,

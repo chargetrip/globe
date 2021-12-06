@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import { calculateVec3FromLatLon } from '../utils/threejs-converters';
-import { MarkerConfig } from '../types/marker';
+import type { MarkerConfig } from '../types/marker';
 import markerDefaults from '../defaults/marker-defaults';
 
 import markerVertexShader from '../shaders/marker.vert.glsl';

@@ -1,5 +1,5 @@
 import { geoInterpolate } from 'd3-geo';
-import { ArcConfig, ControlPoints } from '../types/arc';
+import type { ArcConfig, ControlPoints } from '../types/arc';
 import { calculateVec3FromLatLon } from './threejs-converters';
 
 export default function calculateArcControlPoints(config: ArcConfig): ControlPoints {

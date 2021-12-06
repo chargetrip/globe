@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import { CubicBezierCurve3 } from 'three';
 import { hexToVec3 } from '../utils/threejs-converters';
-import { ArcConfig } from '../types/arc';
+import type { ArcConfig } from '../types/arc';
 import calculateArcControlPoints from '../utils/arc-controlpoints';
 import arcDefaults from '../defaults/arc-defaults';
 
