@@ -3,7 +3,7 @@ import { GeoJSONType } from '../src/types/geojson';
 import Marker from '../src/components/marker';
 import Bar from '../src/components/bar';
 
-const container = "globe-container";
+const container = 'globe-container';
 
 const globe = new GlobeScene(container);
 

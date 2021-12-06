@@ -6,7 +6,7 @@ import markerDefaults from '../defaults/marker-defaults';
 
 import markerVertexShader from '../shaders/marker.vert.glsl';
 import markerFragmentShader from '../shaders/marker.frag.glsl';
-import { randMinMax } from '../utils/time';
+import randMinMax from '../utils/time';
 
 export default class Marker {
   readonly config: MarkerConfig;
