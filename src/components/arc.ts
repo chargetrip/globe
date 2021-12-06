@@ -11,7 +11,7 @@ import arcFragmentShader from '../shaders/arc.frag.glsl';
 
 // TODO: <Wouter> Replace 600 in this file with globe radius that is defined outside of this class
 export default class Arc {
-  readonly config: ArcConfig
+  readonly config: ArcConfig;
 
   constructor(config: ArcConfig) {
     this.config = {
