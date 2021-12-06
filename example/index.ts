@@ -1,9 +1,9 @@
-import GlobeScene from './components/scene';
-import GeoJSONType from './enums/geojson';
-import Marker from './components/marker';
-import Bar from './components/bar';
+import GlobeScene from '../src/components/scene';
+import { GeoJSONType } from '../src/types/geojson';
+import Marker from '../src/components/marker';
+import Bar from '../src/components/bar';
 
-const container = 'globe-container';
+const container = "globe-container";
 
 const globe = new GlobeScene(container);
 
