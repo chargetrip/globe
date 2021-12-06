@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import { getImageData } from '../utils/image-data';
 import configureDotMatrix from '../utils/globe-dots';
-import { GlobeConfig } from '../types/globe';
+import type { GlobeConfig } from '../types/globe';
 import { hexToVec3 } from '../utils/threejs-converters';
 
 import baseSphereVertexShader from '../shaders/baseSphere.vert.glsl';

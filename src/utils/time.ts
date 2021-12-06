@@ -1,3 +1,3 @@
-export function randMinMax(min: number, max: number): number {
+export default function randMinMax(min: number, max: number): number {
   return min + (Math.random() * (max - min));
 }

@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import GlobeCamera from '../controllers/camera';
 import globeDefaults from '../defaults/globe-defaults';
-import { GlobeConfig } from '../types/globe';
+import type { GlobeConfig } from '../types/globe';
 
 import Arc from './arc';
 import Bar from './bar';

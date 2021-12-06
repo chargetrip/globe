@@ -1,4 +1,11 @@
-import GeoJSONType from '../enums/geojson';
+export enum GeoJSONType {
+    Point,
+    Linestring,
+    Polygon,
+    MultiPoint,
+    MultiLineString,
+    MultiPolygon
+}
 
 export interface Geometry {
     type: GeoJSONType,
