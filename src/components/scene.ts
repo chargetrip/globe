@@ -102,6 +102,8 @@ export default class GlobeScene {
   private animate(): void {
     requestAnimationFrame(this.animate.bind(this));
 
+    this.#camera.position.copy(this.camera.camera.position);
+
     this.#markerMeshes.forEach((marker) => {
       const currentTime = marker.material.uniforms.time.value;
       marker.material.uniforms.time.value = (currentTime - 0.015) % 1024;
