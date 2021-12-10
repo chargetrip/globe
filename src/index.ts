@@ -10,6 +10,5 @@ import { BarConfig } from './types/bar';
 import { ArcConfig } from './types/arc';
 
 export {
-  GlobeScene, Arc, Bar, Marker, GeoJSONType,
-  GlobeConfig, MarkerConfig, ArcConfig, BarConfig,
+  GlobeScene, Arc, Bar, Marker, GeoJSONType, GlobeConfig, MarkerConfig, ArcConfig, BarConfig,
 };
