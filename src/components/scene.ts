@@ -137,6 +137,12 @@ export default class GlobeScene {
     });
   }
 
+  removeAllMarkers(): void {
+    this.#markerMeshes.forEach((marker) => {
+      this.#scene.remove(marker);
+    });
+  }
+
   addBar(bar: Bar): void {
     const barMesh = bar.draw();
     this.#scene.add(barMesh);
