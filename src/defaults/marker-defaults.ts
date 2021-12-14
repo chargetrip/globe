@@ -1,5 +1,5 @@
 const markerDefaults = {
-  color: '',
+  color: '#FFFFFF',
   size: 75,
   circleRadius: 0.04,
   borderInnerRadius: 0.15,

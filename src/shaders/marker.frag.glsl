@@ -2,6 +2,7 @@ uniform float circleRadius;
 uniform float borderInnerRadius;
 uniform float borderOuterRadius;
 uniform float time;
+uniform vec3 ringColor;
 
 varying vec2 vUv;
 
@@ -23,7 +24,7 @@ void main() {
     angle = mod( angle + time, 1.0 );
     
     if ( dist < circleRadius ) {
-        color = vec4(1.0, 1.0, 1.0, 1.0);
+        color = vec4(ringColor, 1.0);
     }
     
     // Draw faded ring
@@ -32,7 +33,7 @@ void main() {
         // Combine an angular and radial fade
         float fade = mix( 0.0, angle, smoothstep( borderOuterRadius, borderInnerRadius, dist ) );
         
-        color = mix( color, vec4( 1.0, 1.0, 1.0, 1.0 ), fade );
+        color = mix( color, vec4( ringColor, 1.0 ), fade );
     }
 
     // Output to screen
