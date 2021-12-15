@@ -61,7 +61,4 @@ globe.addMarkers([marker, marker2]);
 globe.addBar(bar);
 globe.addBar(bar2);
 
-setTimeout(() => {
-  console.log('joe');
-  globe.camera.moveTo(59.9139, 10.7522, 1200);
-}, 5000);
+globe.camera.moveTo(59.9139, 10.7522, 1400);
