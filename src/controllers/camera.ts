@@ -1,19 +1,46 @@
 import * as THREE from 'three';
-import { Vector3 } from 'three';
-import { calculateVec3FromLatLon } from '../utils/threejs';
+import { X_AXIS, Y_AXIS, degreesToRadians } from '../utils/threejs';
+import type { GlobeConfig } from '../types/globe';
 
 export default class GlobeCamera {
-  camera: THREE.PerspectiveCamera;
+  #clock: THREE.Clock;
 
-  constructor(camera: THREE.PerspectiveCamera) {
-    this.camera = camera;
+  pivot: THREE.Object3D;
+  camera: THREE.PerspectiveCamera;
+  targetQuaternion: THREE.Quaternion;
+
+  #t: number;
+  #speed: number;
+
+  cameraAnimation: GlobeConfig["cameraAnimation"];
+
+  constructor(
+    camera: THREE.PerspectiveCamera,
+    clock: THREE.Clock,
+    t: number,
+    speed: number,
+    cameraAnimation: GlobeConfig["cameraAnimation"]
+  ) {
+    this.camera = new THREE.PerspectiveCamera();
+
+    this.#clock = clock;
+    this.pivot = new THREE.Object3D();
+    this.pivot.add(camera);
+    this.targetQuaternion = new THREE.Quaternion();
+
+    this.cameraAnimation = cameraAnimation;
+
+    this.#t = t;
+    this.#speed = speed;
   }
 
-  moveTo(lat: number, lon: number, alt: number): void {
-    const pos = calculateVec3FromLatLon(lat, lon, alt + 600);
+  public lookAt(lat: number, lng: number, alt = 2000): void {
+    const rotationY = new THREE.Quaternion();
+    const rotationX = new THREE.Quaternion();
 
-    this.camera.position.set(pos.x, pos.y, pos.z);
-    this.camera.lookAt(new Vector3(0, 0, 0));
-    this.camera.updateProjectionMatrix();
+    rotationY.setFromAxisAngle(Y_AXIS, degreesToRadians(lng));
+    rotationX.setFromAxisAngle(X_AXIS, degreesToRadians(-lat));
+
+    this.targetQuaternion.copy(rotationY.multiply(rotationX)); 
   }
 }
