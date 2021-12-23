@@ -18,9 +18,11 @@ export default class Globe {
   readonly config: GlobeConfig;
 
   isAnimating = true;
+  #camera: THREE.PerspectiveCamera;
 
-  constructor(config: GlobeConfig) {
+  constructor(config: GlobeConfig, camera: THREE.PerspectiveCamera) {
     this.config = config;
+    this.#camera = camera;
   }
 
   drawBaseSphere(): THREE.Mesh {
@@ -47,10 +49,16 @@ export default class Globe {
   drawAtmosphere(): THREE.Mesh {
     const atmosphereGeometry = new THREE.IcosahedronGeometry(this.config.radius, 11);
     const atmosphereMaterial = new THREE.ShaderMaterial({
+      // uniforms: {
+      //   color: {
+      //     value: hexToVec3(this.config.atmosphere!.color!),
+      //   },
+      // },
       uniforms: {
-        color: {
-          value: hexToVec3(this.config.atmosphere!.color!),
-        },
+        c: { value: 0.004 },
+        p: { value: 0.002 },
+        glowColor: { value: hexToVec3(this.config.atmosphere!.color!) },
+        viewVector: { value: this.#camera.position },
       },
       vertexShader: atmosphereVertexShader,
       fragmentShader: atmosphereFragmentShader,

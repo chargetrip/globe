@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import GlobeCamera from '../controllers/camera';
 import globeDefaults from '../defaults/globe-defaults';
 import type { GlobeConfig } from '../types/globe';
@@ -52,7 +53,13 @@ export default class GlobeScene {
     };
 
     this.container = container;
-    this.camera = new GlobeCamera(this.#camera, this.#clock, 0.05, 500, this.globeConfig.cameraAnimation);
+    this.camera = new GlobeCamera(
+      this.#camera,
+      this.#clock,
+      0.05,
+      500,
+      this.globeConfig.cameraAnimation,
+    );
 
     this.init();
     this.drawGlobe();
@@ -76,6 +83,9 @@ export default class GlobeScene {
     this.#renderer.setPixelRatio(window.devicePixelRatio);
     this.#renderer.setSize(container.clientWidth, container.clientHeight);
 
+    const controls = new OrbitControls(this.#camera, this.#renderer.domElement);
+    controls.autoRotate = true;
+
     container.appendChild(this.#renderer.domElement);
 
     this.camera.pivot.add(this.#camera);
@@ -85,7 +95,7 @@ export default class GlobeScene {
   }
 
   private drawGlobe(): void {
-    const globe = new Globe(this.globeConfig);
+    const globe = new Globe(this.globeConfig, this.#camera);
 
     const baseSphere = globe.drawBaseSphere();
     this.#scene.add(baseSphere);
@@ -108,16 +118,17 @@ export default class GlobeScene {
       const { damping, speed } = this.globeConfig.cameraAnimation;
       const step = speed * delta * damping;
 
-      if (!this.camera.pivot.quaternion.equals(this.camera.targetQuaternion)) {
-        this.camera.pivot.quaternion.slerp(this.camera.targetQuaternion, step);
-      }
-      if (!this.camera.camera.position.equals(this.camera.targetPosition)) {
-        this.camera.camera.position
-          .lerp(this.camera.targetPosition, step)
-          // NOTE: Set a max the camera can zoom, as the threejs lerp function 
-          // will continue on lerping if the tab is left unattended, 
-          .max(new THREE.Vector3(0, 0, 1000));
-      }
+      // if (!this.camera.pivot.quaternion.equals(this.camera.targetQuaternion)) {
+      //   this.camera.pivot.quaternion.slerp(this.camera.targetQuaternion, step);
+      // }
+
+      // if (!this.camera.camera.position.equals(this.camera.targetPosition)) {
+      //   this.camera.camera.position
+      //     .lerp(this.camera.targetPosition, step)
+      //     // NOTE: Set a max the camera can zoom, as the threejs lerp function
+      //     // will continue on lerping if the tab is left unattended,
+      //     .max(new THREE.Vector3(0, 0, 1000));
+      // }
     } else {
       this.camera.pivot.quaternion.copy(this.camera.targetQuaternion);
       this.camera.camera.position.copy(this.camera.targetPosition);
