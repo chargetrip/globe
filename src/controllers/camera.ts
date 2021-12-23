@@ -13,14 +13,14 @@ export default class GlobeCamera {
   #t: number;
   #speed: number;
 
-  cameraAnimation: GlobeConfig["cameraAnimation"];
+  cameraAnimation: GlobeConfig['cameraAnimation'];
 
   constructor(
     camera: THREE.PerspectiveCamera,
     clock: THREE.Clock,
     t: number,
     speed: number,
-    cameraAnimation: GlobeConfig["cameraAnimation"]
+    cameraAnimation: GlobeConfig['cameraAnimation'],
   ) {
     this.camera = camera;
 
@@ -43,7 +43,7 @@ export default class GlobeCamera {
     rotationY.setFromAxisAngle(Y_AXIS, degreesToRadians(lng));
     rotationX.setFromAxisAngle(X_AXIS, degreesToRadians(-lat));
 
-    this.targetQuaternion.copy(rotationY.multiply(rotationX)); 
+    this.targetQuaternion.copy(rotationY.multiply(rotationX));
     this.targetPosition.z = alt;
   }
 }
