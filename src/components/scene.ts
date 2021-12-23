@@ -112,7 +112,11 @@ export default class GlobeScene {
         this.camera.pivot.quaternion.slerp(this.camera.targetQuaternion, step);
       }
       if (!this.camera.camera.position.equals(this.camera.targetPosition)) {
-        this.camera.camera.position.lerp(this.camera.targetPosition, step);
+        this.camera.camera.position
+          .lerp(this.camera.targetPosition, step)
+          // NOTE: Set a max the camera can zoom, as the threejs lerp function 
+          // will continue on lerping if the tab is left unattended, 
+          .max(new THREE.Vector3(0, 0, 1000));
       }
     } else {
       this.camera.pivot.quaternion.copy(this.camera.targetQuaternion);
