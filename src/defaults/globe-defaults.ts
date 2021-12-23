@@ -14,7 +14,7 @@ const globeDefaults: GlobeConfig = {
   },
   atmosphere: {
     render: true,
-    color: '#666667',
+    color: '#FFFFFF',
   },
   dotSphere: {
     numberOfDots: 60_000,
