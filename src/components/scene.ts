@@ -37,6 +37,10 @@ export default class GlobeScene {
     this.globeConfig = {
       ...globeDefaults,
       ...globeConfig,
+      cameraAnimation: {
+        ...globeDefaults.cameraAnimation,
+        ...globeConfig.cameraAnimation,
+      },
       baseSphere: {
         ...globeDefaults.baseSphere,
         ...globeConfig.baseSphere,
@@ -70,7 +74,7 @@ export default class GlobeScene {
     this.#camera.near = 100;
     this.#camera.far = 4000;
 
-    this.#camera.position.set(0, 0, 1800);
+    this.#camera.position.set(0, 0, 2000);
     this.#camera.updateProjectionMatrix();
 
     this.#renderer.setPixelRatio(window.devicePixelRatio);
