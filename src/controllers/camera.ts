@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Vector3 } from 'three';
-import { calculateVec3FromLatLon } from '../utils/threejs-converters';
+import { calculateVec3FromLatLon } from '../utils/threejs';
 
 export default class GlobeCamera {
   camera: THREE.PerspectiveCamera;

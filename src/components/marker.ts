@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import { calculateVec3FromLatLon, hexToVec3 } from '../utils/threejs-converters';
+import { calculateVec3FromLatLon, hexToVec3 } from '../utils/threejs';
 import type { MarkerConfig } from '../types/marker';
 import markerDefaults from '../defaults/marker-defaults';
 

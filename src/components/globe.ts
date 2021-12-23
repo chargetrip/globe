@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { getImageData } from '../utils/image-data';
 import configureDotMatrix from '../utils/globe-dots';
 import type { GlobeConfig } from '../types/globe';
-import { hexToVec3 } from '../utils/threejs-converters';
+import { hexToVec3 } from '../utils/threejs';
 
 import baseSphereVertexShader from '../shaders/baseSphere.vert.glsl';
 import baseSphereFragmentShader from '../shaders/baseSphere.frag.glsl';
