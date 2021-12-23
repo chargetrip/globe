@@ -1,6 +1,11 @@
 export interface GlobeConfig {
   radius?: number,
   animates?: boolean,
+  cameraAnimation?: {
+    enabled?: boolean,
+    damping?: number,
+    speed?: number,
+  },
   baseSphere?: {
     colorDay?: string,
     colorNight?: string,

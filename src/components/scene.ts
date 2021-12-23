@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import GlobeCamera from '../controllers/camera';
 import globeDefaults from '../defaults/globe-defaults';
 import type { GlobeConfig } from '../types/globe';
@@ -10,8 +9,12 @@ import Globe from './globe';
 import Marker from './marker';
 
 export default class GlobeScene {
+  #clock: THREE.Clock;
   #scene: THREE.Scene;
+
   #camera: THREE.PerspectiveCamera;
+  camera: GlobeCamera;
+
   #renderer: THREE.WebGLRenderer;
 
   #markerMeshes: THREE.Mesh[] = [];
@@ -20,14 +23,13 @@ export default class GlobeScene {
   readonly globeConfig: GlobeConfig;
   readonly container: string;
 
-  camera: GlobeCamera;
-
   constructor(
     container: string,
     globeConfig: GlobeConfig = globeDefaults,
     antialias = true,
     alpha = true,
   ) {
+    this.#clock = new THREE.Clock();
     this.#scene = new THREE.Scene();
     this.#camera = new THREE.PerspectiveCamera();
     this.#renderer = new THREE.WebGLRenderer({ antialias, alpha });
@@ -50,7 +52,7 @@ export default class GlobeScene {
     };
 
     this.container = container;
-    this.camera = new GlobeCamera(this.#camera);
+    this.camera = new GlobeCamera(this.#camera, this.#clock, 0.05, 500, this.globeConfig.cameraAnimation);
 
     this.init();
     this.drawGlobe();
@@ -71,15 +73,15 @@ export default class GlobeScene {
     this.#camera.position.set(0, 0, 1800);
     this.#camera.updateProjectionMatrix();
 
-    const controls = new OrbitControls(this.#camera, this.#renderer.domElement);
-    controls.autoRotate = true;
-
     this.#renderer.setPixelRatio(window.devicePixelRatio);
     this.#renderer.setSize(container.clientWidth, container.clientHeight);
 
     container.appendChild(this.#renderer.domElement);
 
-    this.animate();
+    this.camera.pivot.add(this.#camera);
+    this.#scene.add(this.camera.pivot);
+
+    this.render();
   }
 
   private drawGlobe(): void {
@@ -100,9 +102,18 @@ export default class GlobeScene {
   }
 
   private animate(): void {
-    requestAnimationFrame(this.animate.bind(this));
+    const delta = this.#clock.getDelta();
 
-    this.#camera.position.copy(this.camera.camera.position);
+    if (this.globeConfig.cameraAnimation.enabled) {
+      if (!this.camera.pivot.quaternion.equals(this.camera.targetQuaternion)) {
+        const { damping, speed } = this.globeConfig.cameraAnimation;
+        const step = speed * delta * damping;
+
+        this.camera.pivot.quaternion.slerp(this.camera.targetQuaternion, step);
+      }
+    } else {
+      this.camera.pivot.quaternion.copy(this.camera.targetQuaternion);
+    }
 
     this.#markerMeshes.forEach((marker) => {
       const currentTime = marker.material.uniforms.time.value;
@@ -113,11 +124,13 @@ export default class GlobeScene {
       const currentTime = this.#dotSphereMesh.material.uniforms.time.value;
       this.#dotSphereMesh.material.uniforms.time.value = (currentTime + 0.01) % 1024;
     }
-
-    this.render();
   }
 
   private render(): void {
+    requestAnimationFrame(() => this.render());
+
+    this.animate();
+
     this.#renderer.render(this.#scene, this.#camera);
   }
 
