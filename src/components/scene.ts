@@ -105,14 +105,18 @@ export default class GlobeScene {
     const delta = this.#clock.getDelta();
 
     if (this.globeConfig.cameraAnimation.enabled) {
-      if (!this.camera.pivot.quaternion.equals(this.camera.targetQuaternion)) {
-        const { damping, speed } = this.globeConfig.cameraAnimation;
-        const step = speed * delta * damping;
+      const { damping, speed } = this.globeConfig.cameraAnimation;
+      const step = speed * delta * damping;
 
+      if (!this.camera.pivot.quaternion.equals(this.camera.targetQuaternion)) {
         this.camera.pivot.quaternion.slerp(this.camera.targetQuaternion, step);
+      }
+      if (!this.camera.camera.position.equals(this.camera.targetPosition)) {
+        this.camera.camera.position.lerp(this.camera.targetPosition, step);
       }
     } else {
       this.camera.pivot.quaternion.copy(this.camera.targetQuaternion);
+      this.camera.camera.position.copy(this.camera.targetPosition);
     }
 
     this.#markerMeshes.forEach((marker) => {

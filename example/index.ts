@@ -91,5 +91,5 @@ setInterval(function() {
   const { lat, lng, location } = locations[randomInteger(0, locations.length)];
   console.log(`Moving camera to ${location}`);
 
-  globe.camera.lookAt(lat, lng, 2000);
+  globe.camera.lookAt(lat, lng, randomInteger(1000, 2000));
 }, 5000);

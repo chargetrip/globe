@@ -8,6 +8,7 @@ export default class GlobeCamera {
   pivot: THREE.Object3D;
   camera: THREE.PerspectiveCamera;
   targetQuaternion: THREE.Quaternion;
+  targetPosition: THREE.Vector3;
 
   #t: number;
   #speed: number;
@@ -21,12 +22,13 @@ export default class GlobeCamera {
     speed: number,
     cameraAnimation: GlobeConfig["cameraAnimation"]
   ) {
-    this.camera = new THREE.PerspectiveCamera();
+    this.camera = camera;
 
     this.#clock = clock;
     this.pivot = new THREE.Object3D();
     this.pivot.add(camera);
     this.targetQuaternion = new THREE.Quaternion();
+    this.targetPosition = new THREE.Vector3(0, 0, 2000);
 
     this.cameraAnimation = cameraAnimation;
 
@@ -42,5 +44,6 @@ export default class GlobeCamera {
     rotationX.setFromAxisAngle(X_AXIS, degreesToRadians(-lat));
 
     this.targetQuaternion.copy(rotationY.multiply(rotationX)); 
+    this.targetPosition.z = alt;
   }
 }
