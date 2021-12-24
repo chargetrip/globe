@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import GlobeCamera from '../controllers/camera';
 import globeDefaults from '../defaults/globe-defaults';
 import type { GlobeConfig } from '../types/globe';
@@ -75,7 +74,7 @@ export default class GlobeScene {
 
     this.#camera.fov = 45;
     this.#camera.aspect = container.clientWidth / container.clientHeight;
-    this.#camera.near = 100;
+    this.#camera.near = 200;
     this.#camera.far = 4000;
 
     this.#camera.position.set(0, 0, 1800);
@@ -83,10 +82,6 @@ export default class GlobeScene {
 
     this.#renderer.setPixelRatio(window.devicePixelRatio);
     this.#renderer.setSize(container.clientWidth, container.clientHeight);
-
-    const controls = new OrbitControls(this.#camera, this.#renderer.domElement);
-    controls.autoRotate = true;
-
     container.appendChild(this.#renderer.domElement);
 
     this.camera.pivot.add(this.#camera);
@@ -115,31 +110,28 @@ export default class GlobeScene {
   private animate(): void {
     const delta = this.#clock.getDelta();
 
-    // this.#atmosphere.rotation.y = this.camera.pivot.rotation.y;
-    this.#atmosphere.rotation.y = this.camera.pivot.rotation.y;
-    // console.log(this.#atmosphere);
+    this.#atmosphere.material.uniforms.viewVector.value = this.#camera.position;
 
     if (this.globeConfig.cameraAnimation.enabled) {
       const { damping, speed } = this.globeConfig.cameraAnimation;
       const step = speed * delta * damping;
 
-      // if (!this.camera.pivot.quaternion.equals(this.camera.targetQuaternion)) {
-      //   this.camera.pivot.quaternion.slerp(this.camera.targetQuaternion, step);
-      // }
+      if (!this.camera.pivot.quaternion.equals(this.camera.targetQuaternion)) {
+        this.camera.pivot.quaternion.slerp(this.camera.targetQuaternion, step);
+      }
 
-      // if (!this.camera.camera.position.equals(this.camera.targetPosition)) {
-      //   this.camera.camera.position
-      //     .lerp(this.camera.targetPosition, step)
-      //     // NOTE: Set a max the camera can zoom, as the threejs lerp function
-      //     // will continue on lerping if the tab is left unattended,
-      //     .max(new THREE.Vector3(0, 0, 1000));
-      // }
+      if (!this.camera.camera.position.equals(this.camera.targetPosition)) {
+        this.camera.camera.position
+          .lerp(this.camera.targetPosition, step)
+          // NOTE: Set a max the camera can zoom, as the threejs lerp function
+          // will continue on lerping if the tab is left unattended,
+          .max(new THREE.Vector3(0, 0, 1000));
+      }
     } else {
       this.camera.pivot.quaternion.copy(this.camera.targetQuaternion);
       this.camera.camera.position.copy(this.camera.targetPosition);
     }
 
-    this.#atmosphere.material.uniforms.viewVector.value = new THREE.Vector3(0, 0, this.camera.camera.position.z).applyEuler(this.camera.pivot.rotation);
 
     this.#markerMeshes.forEach((marker) => {
       const currentTime = marker.material.uniforms.time.value;

@@ -70,26 +70,26 @@ globe.addMarkers([marker, marker2]);
 globe.addBar(bar);
 globe.addBar(bar2);
 
-// const locations = [
-//   { lat: 52.3545828, lng: 4.9041, location: "The Netherlands, Amsterdam" },
-//   { lat: 59.9139, lng: 10.7522, location: "Norway, Oslo" },
-//   { lat: -25.904868, lng: 133.417652, location: "Australia" },
-//   { lat: 41.678839, lng: -102.795717, location: "United States" },
-//   { lat: -25.582567, lng: -68.976621, location: "Chile" },
-//   { lat: 33.1926767, lng: 128.1527297, location: "Japan" },
-//   { lat: 46.1390319, lng: -2.4351483, location: "France" },
-//   { lat: 40.1301532, lng: -8.201886, location: "Spain" },
-//   { lat: -29.754299, lng: 24.497087, location: "South Africa" },
-//   { lat: 54.7226517, lng: -113.7225747, location: "Canada" },
-// ];
+const locations = [
+  { lat: 52.3545828, lng: 4.9041, location: "The Netherlands, Amsterdam" },
+  { lat: 59.9139, lng: 10.7522, location: "Norway, Oslo" },
+  { lat: -25.904868, lng: 133.417652, location: "Australia" },
+  { lat: 41.678839, lng: -102.795717, location: "United States" },
+  { lat: -25.582567, lng: -68.976621, location: "Chile" },
+  { lat: 33.1926767, lng: 128.1527297, location: "Japan" },
+  { lat: 46.1390319, lng: -2.4351483, location: "France" },
+  { lat: 40.1301532, lng: -8.201886, location: "Spain" },
+  { lat: -29.754299, lng: 24.497087, location: "South Africa" },
+  { lat: 54.7226517, lng: -113.7225747, location: "Canada" },
+];
 
-// function randomInteger(min: number, max: number): number {
-//   return Math.floor(min + Math.random() * (max - min));
-// }
+function randomInteger(min: number, max: number): number {
+  return Math.floor(min + Math.random() * (max - min));
+}
 
-// setInterval(function() {
-//   const { lat, lng, location } = locations[randomInteger(0, locations.length)];
-//   console.log(`Moving camera to ${location}`);
+setInterval(function() {
+  const { lat, lng, location } = locations[randomInteger(0, locations.length)];
+  console.log(`Moving camera to ${location}`);
 
-//   globe.camera.lookAt(lat, lng, randomInteger(1000, 2000));
-// }, 5000);
+  globe.camera.lookAt(lat, lng, randomInteger(1000, 2000));
+}, 5000);
