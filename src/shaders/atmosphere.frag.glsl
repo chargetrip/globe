@@ -3,8 +3,10 @@ uniform vec3 color;
 varying float intensity;
 
 void main() {
-	vec3 glow = color * intensity;
-    gl_FragColor = vec4( glow, 1.0 );
+	// vec3 glow = color * intensity
+	vec3 glow = vec3(1.0, 0.0, 0.0) * intensity;
+
+  gl_FragColor = vec4( color, intensity );
 }
 
 // uniform vec3 color;

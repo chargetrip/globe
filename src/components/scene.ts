@@ -20,6 +20,7 @@ export default class GlobeScene {
 
   #markerMeshes: THREE.Mesh[] = [];
   #dotSphereMesh: THREE.Mesh | null = null;
+  #atmosphere: THREE.Mesh;
 
   readonly globeConfig: GlobeConfig;
   readonly container: string;
@@ -61,8 +62,8 @@ export default class GlobeScene {
       this.globeConfig.cameraAnimation,
     );
 
-    this.init();
     this.drawGlobe();
+    this.init();
   }
 
   private init(): void {
@@ -101,8 +102,8 @@ export default class GlobeScene {
     this.#scene.add(baseSphere);
 
     if (this.globeConfig.atmosphere?.render) {
-      const atmosphere = globe.drawAtmosphere();
-      this.#scene.add(atmosphere);
+      this.#atmosphere = globe.drawAtmosphere();
+      this.#scene.add(this.#atmosphere);
     }
 
     globe.drawDotSphere().then((dotSphere) => {
@@ -113,6 +114,10 @@ export default class GlobeScene {
 
   private animate(): void {
     const delta = this.#clock.getDelta();
+
+    // this.#atmosphere.rotation.y = this.camera.pivot.rotation.y;
+    this.#atmosphere.rotation.y = this.camera.pivot.rotation.y;
+    // console.log(this.#atmosphere);
 
     if (this.globeConfig.cameraAnimation.enabled) {
       const { damping, speed } = this.globeConfig.cameraAnimation;
@@ -133,6 +138,8 @@ export default class GlobeScene {
       this.camera.pivot.quaternion.copy(this.camera.targetQuaternion);
       this.camera.camera.position.copy(this.camera.targetPosition);
     }
+
+    this.#atmosphere.material.uniforms.viewVector.value = new THREE.Vector3(0, 0, this.camera.camera.position.z).applyEuler(this.camera.pivot.rotation);
 
     this.#markerMeshes.forEach((marker) => {
       const currentTime = marker.material.uniforms.time.value;

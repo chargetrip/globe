@@ -57,10 +57,12 @@ export default class Globe {
       uniforms: {
         c: { value: 0.5 },
         p: { value: 4.0 },
+        // c: { value: 0.5 },
+        // p: { value: 4.0 },
         color: { value: hexToVec3(this.config.atmosphere!.color!) },
         viewVector: { value: this.#camera.position },
       },
-      blending: THREE.AdditiveBlending,
+      // blending: THREE.AdditiveBlending,
       side: THREE.BackSide,
       vertexShader: atmosphereVertexShader,
       fragmentShader: atmosphereFragmentShader,
