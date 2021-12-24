@@ -25,7 +25,7 @@ void main() {
     float zoomFactor = ( 1.0 - smoothstep(800.0, 2000.0, viewVector.z) ) / 4.0;
 
     // float upperAtmosphere = pow(0.75 - atmoFade, 2.0) / 2.0;
-    float upperAtmosphere = pow(0.75 + zoomFactor - atmoFade, 2.0) / 2.0;
+    float upperAtmosphere = pow(0.5 + zoomFactor - atmoFade, 2.0) / 2.0;
     float lowerAtmosphere = smoothstep(0.0, 1.0, pow(0.82 - atmoFade , 48.0) / 120.0);
 
     // float atmosphere = clamp(0.0, 1.0, lowerAtmosphere + upperAtmosphere + zoomFactor / 8.0);
@@ -33,5 +33,7 @@ void main() {
 
     float edgeFade = dot(vertexNormal.xy, vec2(-1.0, 1.0)) + 0.25;
 
-    gl_FragColor = vec4(color * edgeFade, 1.0) * atmosphere;
+    gl_FragColor = vec4(color, edgeFade * atmosphere);
+    // gl_FragColor = vec4(color, atmosphere);
+    // gl_FragColor = vec4(color, 0.0);
 }
