@@ -49,16 +49,7 @@ export default class Globe {
   drawAtmosphere(): THREE.Mesh {
     const atmosphereGeometry = new THREE.IcosahedronGeometry(this.config.radius, 11);
     const atmosphereMaterial = new THREE.ShaderMaterial({
-      // uniforms: {
-      //   color: {
-      //     value: hexToVec3(this.config.atmosphere!.color!),
-      //   },
-      // },
       uniforms: {
-        c: { value: 0.5 },
-        p: { value: 4.0 },
-        // c: { value: 0.5 },
-        // p: { value: 4.0 },
         color: { value: hexToVec3(this.config.atmosphere!.color!) },
         viewVector: { value: this.#camera.position },
       },
