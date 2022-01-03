@@ -19,6 +19,7 @@ export default class GlobeScene {
 
   #markerMeshes: THREE.Mesh[] = [];
   #dotSphereMesh: THREE.Mesh | null = null;
+  #atmosphere: THREE.Mesh;
 
   readonly globeConfig: GlobeConfig;
   readonly container: string;
@@ -56,10 +57,16 @@ export default class GlobeScene {
     };
 
     this.container = container;
-    this.camera = new GlobeCamera(this.#camera, this.#clock, 0.05, 500, this.globeConfig.cameraAnimation);
+    this.camera = new GlobeCamera(
+      this.#camera,
+      this.#clock,
+      0.05,
+      500,
+      this.globeConfig.cameraAnimation,
+    );
 
-    this.init();
     this.drawGlobe();
+    this.init();
   }
 
   private init(): void {
@@ -71,7 +78,7 @@ export default class GlobeScene {
 
     this.#camera.fov = 45;
     this.#camera.aspect = container.clientWidth / container.clientHeight;
-    this.#camera.near = 100;
+    this.#camera.near = 200;
     this.#camera.far = 4000;
 
     this.#camera.position.set(0, 0, 2000);
@@ -79,7 +86,6 @@ export default class GlobeScene {
 
     this.#renderer.setPixelRatio(window.devicePixelRatio);
     this.#renderer.setSize(container.clientWidth, container.clientHeight);
-
     container.appendChild(this.#renderer.domElement);
 
     this.camera.pivot.add(this.#camera);
@@ -89,14 +95,14 @@ export default class GlobeScene {
   }
 
   private drawGlobe(): void {
-    const globe = new Globe(this.globeConfig);
+    const globe = new Globe(this.globeConfig, this.#camera);
 
     const baseSphere = globe.drawBaseSphere();
     this.#scene.add(baseSphere);
 
     if (this.globeConfig.atmosphere?.render) {
-      const atmosphere = globe.drawAtmosphere();
-      this.#scene.add(atmosphere);
+      this.#atmosphere = globe.drawAtmosphere();
+      this.#scene.add(this.#atmosphere);
     }
 
     globe.drawDotSphere().then((dotSphere) => {
@@ -108,6 +114,8 @@ export default class GlobeScene {
   private animate(): void {
     const delta = this.#clock.getDelta();
 
+    this.#atmosphere.material.uniforms.viewVector.value = this.#camera.position;
+
     if (this.globeConfig.cameraAnimation.enabled) {
       const { damping, speed } = this.globeConfig.cameraAnimation;
       const step = speed * delta * damping;
@@ -115,11 +123,12 @@ export default class GlobeScene {
       if (!this.camera.pivot.quaternion.equals(this.camera.targetQuaternion)) {
         this.camera.pivot.quaternion.slerp(this.camera.targetQuaternion, step);
       }
+
       if (!this.camera.camera.position.equals(this.camera.targetPosition)) {
         this.camera.camera.position
           .lerp(this.camera.targetPosition, step)
-          // NOTE: Set a max the camera can zoom, as the threejs lerp function 
-          // will continue on lerping if the tab is left unattended, 
+          // NOTE: Set a max the camera can zoom, as the threejs lerp function
+          // will continue on lerping if the tab is left unattended,
           .max(new THREE.Vector3(0, 0, 1000));
       }
     } else {
