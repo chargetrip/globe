@@ -22,19 +22,13 @@ export default class GlobeScene {
   #atmosphere: THREE.Mesh;
 
   readonly globeConfig: GlobeConfig;
-  readonly container: string;
+  readonly container: HTMLCanvasElement;
 
   constructor(
-    container: string,
     globeConfig: GlobeConfig = globeDefaults,
     antialias = true,
     alpha = true,
   ) {
-    this.#clock = new THREE.Clock();
-    this.#scene = new THREE.Scene();
-    this.#camera = new THREE.PerspectiveCamera();
-    this.#renderer = new THREE.WebGLRenderer({ antialias, alpha });
-
     this.globeConfig = {
       ...globeDefaults,
       ...globeConfig,
@@ -56,7 +50,17 @@ export default class GlobeScene {
       },
     };
 
-    this.container = container;
+    this.container = this.getContainer(globeConfig.container);
+
+    this.#clock = new THREE.Clock();
+    this.#scene = new THREE.Scene();
+    this.#camera = new THREE.PerspectiveCamera();
+    this.#renderer = new THREE.WebGLRenderer({
+      alpha,
+      antialias,
+      canvas: this.container,
+    });
+
     this.camera = new GlobeCamera(
       this.#camera,
       this.#clock,
@@ -71,6 +75,25 @@ export default class GlobeScene {
     this.init();
   }
 
+  /**
+   * Return the element for the HTMLCanvasElement
+   * @param {string | HTMLCanvasElement} container - Globe target container
+   * @returns {HTMLCanvasElement} - Globe container
+   */
+  private getContainer(container: string | HTMLCanvasElement): HTMLCanvasElement {
+    if (typeof container === "string") {
+      const element = document.querySelector(container);
+
+      if (!(element instanceof HTMLCanvasElement)) {
+        throw new Error("globe container was not found");
+      }
+
+      return element;
+    }
+
+    return container;
+  }
+
   private handleResize = (_: UIEvent): void => {
     this.#renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -79,14 +102,10 @@ export default class GlobeScene {
   }
 
   private init(): void {
-    const container = document.getElementById(this.container);
-
-    if (container === null) {
-      throw Error('GlobeKit - No container found');
-    }
-
     this.#camera.fov = 45;
-    this.#camera.aspect = container.clientWidth / container.clientHeight;
+    this.#camera.aspect = (
+      this.container.clientWidth / this.container.clientHeight
+    );
     this.#camera.near = 200;
     this.#camera.far = 4000;
 
@@ -94,8 +113,10 @@ export default class GlobeScene {
     this.#camera.updateProjectionMatrix();
 
     this.#renderer.setPixelRatio(window.devicePixelRatio);
-    this.#renderer.setSize(container.clientWidth, container.clientHeight);
-    container.appendChild(this.#renderer.domElement);
+    this.#renderer.setSize(
+      this.container.clientWidth,
+      this.container.clientHeight
+    );
 
     this.camera.pivot.add(this.#camera);
     this.#scene.add(this.camera.pivot);
