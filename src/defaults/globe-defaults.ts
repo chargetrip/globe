@@ -3,6 +3,7 @@ import type { GlobeConfig } from '../types/globe';
 const globeDefaults: GlobeConfig = {
   radius: 600,
   animates: true,
+  container: 'globe-container',
   cameraAnimation: {
     enabled: true,
     damping: 0.05,

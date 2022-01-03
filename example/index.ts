@@ -3,12 +3,14 @@ import { GeoJSONType } from '../src/types/geojson';
 import Marker from '../src/components/marker';
 import Bar from '../src/components/bar';
 
-const container = 'globe-container';
+const container = document.querySelector("#globe-container") as HTMLCanvasElement;
 
 // Instantanous camera move from point A to point B.
 // const globe = new GlobeScene(container, { cameraAnimation: { enabled: false }});
+//
 // By default, animated camera move from point A to point B.
-const globe = new GlobeScene(container, {
+const globe = new GlobeScene({
+  container,
   cameraAnimation: {
     enabled: true,
     damping: 0.01,

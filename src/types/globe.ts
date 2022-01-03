@@ -1,6 +1,7 @@
 export interface GlobeConfig {
   radius?: number,
   animates?: boolean,
+  container?: string | HTMLCanvasElement,
   cameraAnimation?: {
     enabled?: boolean,
     damping?: number,
