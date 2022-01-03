@@ -65,8 +65,17 @@ export default class GlobeScene {
       this.globeConfig.cameraAnimation,
     );
 
+    window.addEventListener("resize", this.handleResize);
+
     this.drawGlobe();
     this.init();
+  }
+
+  private handleResize = (_: UIEvent): void => {
+    this.#renderer.setSize(window.innerWidth, window.innerHeight);
+
+    this.#camera.aspect = window.innerWidth / window.innerHeight;
+    this.#camera.updateProjectionMatrix();
   }
 
   private init(): void {
