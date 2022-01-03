@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { getImageData } from '../utils/image-data';
 import configureDotMatrix from '../utils/globe-dots';
 import type { GlobeConfig } from '../types/globe';
-import { hexToVec3 } from '../utils/threejs';
 
 import baseSphereVertexShader from '../shaders/baseSphere.vert.glsl';
 import baseSphereFragmentShader from '../shaders/baseSphere.frag.glsl';
@@ -30,10 +29,10 @@ export default class Globe {
     const material = new THREE.ShaderMaterial({
       uniforms: {
         colorDay: {
-          value: hexToVec3(this.config.baseSphere!.colorDay!),
+          value: new THREE.Color(this.config.baseSphere!.colorDay!),
         },
         colorNight: {
-          value: hexToVec3(this.config.baseSphere!.colorNight!),
+          value: new THREE.Color(this.config.baseSphere!.colorNight!),
         },
       },
       vertexShader: baseSphereVertexShader,
@@ -50,7 +49,7 @@ export default class Globe {
     const atmosphereGeometry = new THREE.IcosahedronGeometry(this.config.radius, 11);
     const atmosphereMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        color: { value: hexToVec3(this.config.atmosphere!.color!) },
+        color: { value: new THREE.Color(this.config.atmosphere!.color!) },
         viewVector: { value: this.#camera.position },
       },
       // blending: THREE.AdditiveBlending,
@@ -79,7 +78,7 @@ export default class Globe {
           value: 5.0,
         },
         color: {
-          value: hexToVec3(this.config.dotSphere!.color!),
+          value: new THREE.Color(this.config.dotSphere!.color!),
         },
       },
       transparent: true,

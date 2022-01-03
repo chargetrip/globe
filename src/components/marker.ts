@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import { calculateVec3FromLatLon, hexToVec3 } from '../utils/threejs';
+import { calculateVec3FromLatLon } from '../utils/threejs';
 import type { MarkerConfig } from '../types/marker';
 import markerDefaults from '../defaults/marker-defaults';
 
@@ -28,7 +28,7 @@ export default class Marker {
         borderInnerRadius: { value: this.config.borderInnerRadius },
         borderOuterRadius: { value: this.config.borderOuterRadius },
         time: { value: randMinMax(0, 10) },
-        ringColor: { value: hexToVec3(this.config.color) },
+        ringColor: { value: new THREE.Color(this.config.color) },
       },
       fragmentShader: markerFragmentShader,
       vertexShader: markerVertexShader,
