@@ -89,5 +89,6 @@ function randomInteger(min: number, max: number): number {
 
 setInterval(() => {
   const { lat, lng, location } = locations[randomInteger(0, locations.length)];
+
   globe.camera.lookAt(lat, lng, randomInteger(1000, 2000));
 }, 5000);
