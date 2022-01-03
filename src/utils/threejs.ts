@@ -1,4 +1,4 @@
-import { Color, Vector3 } from 'three';
+import { Vector3 } from 'three';
 
 export const X_AXIS = new Vector3(1, 0, 0);
 export const Y_AXIS = new Vector3(0, 1, 0);
@@ -18,14 +18,4 @@ export const calculateVec3FromLatLon = (lat: number, lon: number, radius: number
   const z = Math.sin(phi) * Math.sin(theta) * rho;
 
   return new Vector3(x, y, z);
-};
-
-export const hexToVec3 = (hexString: string): Vector3 | null => {
-  if (/^#([0-9A-F]{3}){1,2}$/i.test(hexString)) {
-    const color = new Color(hexString);
-    const rgb = color.toArray().map((_color) => Math.round(_color * 1000) / 1000);
-    return new Vector3(rgb[0], rgb[1], rgb[2]);
-  }
-
-  throw Error('Invalid hex string added. Did you forget to add #?');
 };

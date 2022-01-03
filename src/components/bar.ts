@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import type { BarConfig } from '../types/bar';
-import { calculateVec3FromLatLon, hexToVec3 } from '../utils/threejs';
+import { calculateVec3FromLatLon } from '../utils/threejs';
 
 import barVertexShader from '../shaders/bar.vert.glsl';
 import barFragmentShader from '../shaders/bar.frag.glsl';
@@ -31,8 +31,8 @@ export default class Bar {
     );
     geometry.computeBoundingBox();
 
-    const vec3StartColor = hexToVec3(this.config.startColor!) ?? new THREE.Vector3(1.0, 0.0, 1.0);
-    const vec3EndColor = hexToVec3(this.config.endColor!) ?? new THREE.Vector3(1.0, 1.0, 0.0);
+    const vec3StartColor = new THREE.Color(this.config.startColor! ?? "#ff00ff");
+    const vec3EndColor = new THREE.Color(this.config.endColor! ?? "#ffff00");
 
     if (!geometry.boundingBox) { throw Error('Globe - size of bar is unknown'); }
 
@@ -40,18 +40,18 @@ export default class Bar {
       uniforms: {
         startColor: {
           value: new THREE.Vector4(
-            vec3StartColor.x,
-            vec3StartColor.y,
-            vec3StartColor.z,
-              this.config.startColorOpacity!,
+            vec3StartColor.r,
+            vec3StartColor.g,
+            vec3StartColor.b,
+            this.config.startColorOpacity!,
           ),
         },
         endColor: {
           value: new THREE.Vector4(
-            vec3EndColor.x,
-            vec3EndColor.y,
-            vec3EndColor.z,
-              this.config.endColorOpacity!,
+            vec3EndColor.r,
+            vec3EndColor.g,
+            vec3EndColor.b,
+            this.config.endColorOpacity!,
           ),
         },
         bboxMin: {
