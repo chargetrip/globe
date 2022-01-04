@@ -1,7 +1,7 @@
 {
   "name": "@chargetrip/globe",
   "description": "Interactive globe to render real-time data.",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "source": "src/index.ts",
   "main": "dist/main.js",
   "module": "dist/module.js",
