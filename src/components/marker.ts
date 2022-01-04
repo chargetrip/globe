@@ -19,8 +19,6 @@ export default class Marker {
   }
 
   draw(): THREE.Mesh {
-    const targetVector = new THREE.Vector3(0, 0, 0);
-
     const geometry = new THREE.PlaneGeometry(this.config.size, this.config.size);
     const material = new THREE.ShaderMaterial({
       uniforms: {
@@ -33,7 +31,8 @@ export default class Marker {
       fragmentShader: markerFragmentShader,
       vertexShader: markerVertexShader,
       transparent: true,
-      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
+      depthTest: false,
     });
 
     const position = calculateVec3FromLatLon(
@@ -46,7 +45,7 @@ export default class Marker {
 
     // Offset position to prevent shader intersection with globe dots
     mesh.position.copy(position).multiplyScalar(1.0025);
-    mesh.lookAt(targetVector);
+    mesh.lookAt(position.multiplyScalar(2));
 
     return mesh;
   }
