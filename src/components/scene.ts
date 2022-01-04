@@ -190,14 +190,13 @@ export default class GlobeScene {
   }
 
   addMarkers(markers: Marker | Marker[]): void {
-    let localMarkers = markers;
-    if (!Array.isArray(markers)) { localMarkers = [markers]; }
+    markers = Array.isArray(markers) ? markers : [markers];
 
-    (localMarkers as Marker[]).forEach((marker) => {
+    for (const marker of markers) {
       const mesh = marker.draw();
       this.#markerMeshes.push(mesh);
       this.#scene.add(mesh);
-    });
+    }
   }
 
   removeAllMarkers(): void {
