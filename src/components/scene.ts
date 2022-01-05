@@ -70,6 +70,7 @@ export default class GlobeScene {
     );
 
     window.addEventListener("resize", this.handleResize);
+    this.handleResize();
 
     this.drawGlobe();
     this.init();
@@ -94,11 +95,16 @@ export default class GlobeScene {
     return container;
   }
 
-  private handleResize = (_: UIEvent): void => {
-    this.#renderer.setSize(window.innerWidth, window.innerHeight);
+  private handleResize = (): void => {
+    const canvas = this.#renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
 
-    this.#camera.aspect = window.innerWidth / window.innerHeight;
-    this.#camera.updateProjectionMatrix();
+    if (canvas.width !== width || canvas.height !== height) {
+      this.#renderer.setSize(width, height, false);
+      this.#camera.aspect = width / height;
+      this.#camera.updateProjectionMatrix();
+    }
   }
 
   private init(): void {
@@ -113,10 +119,6 @@ export default class GlobeScene {
     this.#camera.updateProjectionMatrix();
 
     this.#renderer.setPixelRatio(window.devicePixelRatio);
-    this.#renderer.setSize(
-      this.container.clientWidth,
-      this.container.clientHeight
-    );
 
     this.camera.pivot.add(this.#camera);
     this.#scene.add(this.camera.pivot);
