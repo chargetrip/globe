@@ -9,6 +9,8 @@ export default class GlobeCamera {
   camera: THREE.PerspectiveCamera;
   targetQuaternion: THREE.Quaternion;
   targetPosition: THREE.Vector3;
+  offsetAzimuth: number;
+  offsetPolar: number;
 
   #t: number;
   #speed: number;
@@ -40,8 +42,14 @@ export default class GlobeCamera {
     const rotationY = new THREE.Quaternion();
     const rotationX = new THREE.Quaternion();
 
-    rotationY.setFromAxisAngle(Y_AXIS, degreesToRadians(lng));
-    rotationX.setFromAxisAngle(X_AXIS, degreesToRadians(-lat));
+    rotationY.setFromAxisAngle(
+      Y_AXIS,
+      degreesToRadians(lng + this.cameraAnimation.offsetAzimuth)
+    );
+    rotationX.setFromAxisAngle(
+      X_AXIS,
+      degreesToRadians(-lat + this.cameraAnimation.offsetPolar)
+    );
 
     this.targetQuaternion.copy(rotationY.multiply(rotationX));
     this.targetPosition.z = alt;

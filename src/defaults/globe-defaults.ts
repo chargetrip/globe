@@ -8,6 +8,8 @@ const globeDefaults: GlobeConfig = {
     enabled: true,
     damping: 0.05,
     speed: 50,
+    offsetAzimuth: 0,
+    offsetPolar: 0,
   },
   baseSphere: {
     colorDay: '#606263',
