@@ -6,6 +6,8 @@ export interface GlobeConfig {
     enabled?: boolean,
     damping?: number,
     speed?: number,
+    offsetAzimuth?: number,
+    offsetPolar?: number,
   },
   baseSphere?: {
     colorDay?: string,

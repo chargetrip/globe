@@ -15,6 +15,7 @@ const globe = new GlobeScene({
     enabled: true,
     damping: 0.01,
     speed: 50.0,
+    offsetPolar: 22.5,
   },
 });
 
@@ -91,6 +92,7 @@ function randomInteger(min: number, max: number): number {
 
 setInterval(() => {
   const { lat, lng, location } = locations[randomInteger(0, locations.length)];
+  console.log("Moving towards:", location);
 
   globe.camera.lookAt(lat, lng, randomInteger(1000, 2000));
 }, 5000);
