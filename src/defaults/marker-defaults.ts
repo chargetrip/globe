@@ -4,6 +4,7 @@ const markerDefaults = {
   circleRadius: 0.04,
   borderInnerRadius: 0.15,
   borderOuterRadius: 0.20,
+  animates: true,
 };
 
 export default markerDefaults;

@@ -7,4 +7,5 @@ export interface MarkerConfig {
     circleRadius?: number,
     borderInnerRadius?: number,
     borderOuterRadius?: number,
+    animates?: boolean
 }

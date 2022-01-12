@@ -26,6 +26,7 @@ export default class Marker {
         borderInnerRadius: { value: this.config.borderInnerRadius },
         borderOuterRadius: { value: this.config.borderOuterRadius },
         time: { value: randMinMax(0, 10) },
+        animates: { value: this.config.animates },
         ringColor: { value: new THREE.Color(this.config.color) },
       },
       fragmentShader: markerFragmentShader,
