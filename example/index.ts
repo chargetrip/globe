@@ -3,7 +3,7 @@ import { GeoJSONType } from '../src/types/geojson';
 import Marker from '../src/components/marker';
 import Bar from '../src/components/bar';
 
-const container = document.querySelector("#globe-container") as HTMLCanvasElement;
+const container = document.querySelector('#globe-container') as HTMLCanvasElement;
 
 // Instantanous camera move from point A to point B.
 // const globe = new GlobeScene(container, { cameraAnimation: { enabled: false }});
@@ -70,8 +70,7 @@ const marker2 = new Marker({
 });
 
 globe.addMarkers([marker, marker2]);
-globe.addBar(bar);
-globe.addBar(bar2);
+globe.addBars([bar, bar2]);
 
 const locations = [
   { lat: 52.3545828, lng: 4.9041, location: 'The Netherlands, Amsterdam' },

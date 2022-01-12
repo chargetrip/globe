@@ -69,7 +69,7 @@ export default class GlobeScene {
       this.globeConfig.cameraAnimation,
     );
 
-    window.addEventListener("resize", this.handleResize);
+    window.addEventListener('resize', this.handleResize);
     this.handleResize();
 
     this.drawGlobe();
@@ -82,11 +82,11 @@ export default class GlobeScene {
    * @returns {HTMLCanvasElement} - Globe container
    */
   private getContainer(container: string | HTMLCanvasElement): HTMLCanvasElement {
-    if (typeof container === "string") {
+    if (typeof container === 'string') {
       const element = document.querySelector(container);
 
       if (!(element instanceof HTMLCanvasElement)) {
-        throw new Error("globe container was not found");
+        throw new Error('globe container was not found');
       }
 
       return element;
@@ -105,7 +105,7 @@ export default class GlobeScene {
       this.#camera.aspect = width / height;
       this.#camera.updateProjectionMatrix();
     }
-  }
+  };
 
   private init(): void {
     this.#camera.fov = 45;
@@ -149,8 +149,8 @@ export default class GlobeScene {
     this.#atmosphere.material.uniforms.viewVector.value = this.#camera.position;
 
     if (
-      this.globeConfig.cameraAnimation.enabled &&
-      document.visibilityState !== "hidden"
+      this.globeConfig.cameraAnimation.enabled
+      && document.visibilityState !== 'hidden'
     ) {
       const { damping, speed } = this.globeConfig.cameraAnimation;
       const step = speed * delta * damping;
@@ -192,13 +192,14 @@ export default class GlobeScene {
   }
 
   addMarkers(markers: Marker | Marker[]): void {
+    // eslint-disable-next-line no-param-reassign
     markers = Array.isArray(markers) ? markers : [markers];
 
-    for (const marker of markers) {
+    markers.forEach((marker) => {
       const mesh = marker.draw();
       this.#markerMeshes.push(mesh);
       this.#scene.add(mesh);
-    }
+    });
   }
 
   removeAllMarkers(): void {
@@ -207,8 +208,13 @@ export default class GlobeScene {
     });
   }
 
-  addBar(bar: Bar): void {
-    const barMesh = bar.draw();
-    this.#scene.add(barMesh);
+  addBars(bars: Bar | Bar[]): void {
+    // eslint-disable-next-line no-param-reassign
+    bars = Array.isArray(bars) ? bars : [bars];
+
+    bars.forEach((bar) => {
+      const mesh = bar.draw();
+      this.#scene.add(mesh);
+    });
   }
 }
