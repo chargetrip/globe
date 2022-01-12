@@ -216,11 +216,6 @@ export default class GlobeScene {
     }
   }
 
-  removeAllAnnotations(): void {
-    this.removeAllMarkers();
-    this.removeAllBars();
-  }
-
   removeAllMarkers(): void {
     // eslint-disable-next-line no-restricted-syntax
     for (const marker of this.#markerMeshes) {
@@ -233,5 +228,10 @@ export default class GlobeScene {
     for (const bar of this.#barMeshes) {
       this.#scene.remove(bar);
     }
+  }
+
+  removeAllAnnotations(): void {
+    this.removeAllMarkers();
+    this.removeAllBars();
   }
 }
