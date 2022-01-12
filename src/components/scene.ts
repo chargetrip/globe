@@ -18,6 +18,7 @@ export default class GlobeScene {
   #renderer: THREE.WebGLRenderer;
 
   #markerMeshes: THREE.Mesh[] = [];
+  #barMeshes: THREE.Mesh[] = [];
   #dotSphereMesh: THREE.Mesh | null = null;
   #atmosphere: THREE.Mesh;
 
@@ -203,12 +204,6 @@ export default class GlobeScene {
     }
   }
 
-  removeAllMarkers(): void {
-    this.#markerMeshes.forEach((marker) => {
-      this.#scene.remove(marker);
-    });
-  }
-
   addBars(bars: Bar | Bar[]): void {
     // eslint-disable-next-line no-param-reassign
     bars = Array.isArray(bars) ? bars : [bars];
@@ -216,7 +211,27 @@ export default class GlobeScene {
     // eslint-disable-next-line no-restricted-syntax
     for (const bar of bars) {
       const mesh = bar.draw();
+      this.#barMeshes.push(mesh);
       this.#scene.add(mesh);
+    }
+  }
+
+  removeAllAnnotations(): void {
+    this.removeAllMarkers();
+    this.removeAllBars();
+  }
+
+  removeAllMarkers(): void {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const marker of this.#markerMeshes) {
+      this.#scene.remove(marker);
+    }
+  }
+
+  removeAllBars(): void {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const bar of this.#barMeshes) {
+      this.#scene.remove(bar);
     }
   }
 }
