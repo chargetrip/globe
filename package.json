@@ -11,9 +11,9 @@
     "build": "parcel build --log-level verbose"
   },
   "devDependencies": {
-    "@parcel/packager-ts": "^2.0.1",
-    "@parcel/resolver-glob": "^2.0.1",
-    "@parcel/transformer-typescript-types": "^2.0.1",
+    "@parcel/packager-ts": "2.0.1",
+    "@parcel/resolver-glob": "2.0.1",
+    "@parcel/transformer-typescript-types": "2.0.1",
     "@types/d3-geo": "^3.0.2",
     "@types/three": "^0.133.1",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
