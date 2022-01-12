@@ -195,11 +195,12 @@ export default class GlobeScene {
     // eslint-disable-next-line no-param-reassign
     markers = Array.isArray(markers) ? markers : [markers];
 
-    markers.forEach((marker) => {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const marker of markers) {
       const mesh = marker.draw();
       this.#markerMeshes.push(mesh);
       this.#scene.add(mesh);
-    });
+    }
   }
 
   removeAllMarkers(): void {
@@ -212,9 +213,10 @@ export default class GlobeScene {
     // eslint-disable-next-line no-param-reassign
     bars = Array.isArray(bars) ? bars : [bars];
 
-    bars.forEach((bar) => {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const bar of bars) {
       const mesh = bar.draw();
       this.#scene.add(mesh);
-    });
+    }
   }
 }
