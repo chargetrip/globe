@@ -1,25 +1,25 @@
-import * as THREE from 'three';
+import * as THREE from 'three'
 
-import { calculateVec3FromLatLon } from '../utils/threejs';
-import type { MarkerConfig } from '../types/marker';
-import markerDefaults from '../defaults/marker-defaults';
+import { calculateVec3FromLatLon } from '../utils/threejs'
+import type { MarkerConfig } from '../types/marker'
+import markerDefaults from '../defaults/marker-defaults'
 
-import markerVertexShader from '../shaders/marker.vert.glsl';
-import markerFragmentShader from '../shaders/marker.frag.glsl';
-import randMinMax from '../utils/time';
+import markerVertexShader from '../shaders/marker.vert.glsl'
+import markerFragmentShader from '../shaders/marker.frag.glsl'
+import randMinMax from '../utils/time'
 
 export default class Marker {
-  readonly config: MarkerConfig;
+  readonly config: MarkerConfig
 
   constructor(config: MarkerConfig) {
     this.config = {
       ...markerDefaults,
       ...config,
-    };
+    }
   }
 
   draw(): THREE.Mesh {
-    const geometry = new THREE.PlaneGeometry(this.config.size, this.config.size);
+    const geometry = new THREE.PlaneGeometry(this.config.size, this.config.size)
     const material = new THREE.ShaderMaterial({
       uniforms: {
         circleRadius: { value: this.config.circleRadius },
@@ -34,20 +34,20 @@ export default class Marker {
       transparent: true,
       blending: THREE.AdditiveBlending,
       depthTest: false,
-    });
+    })
 
     const position = calculateVec3FromLatLon(
       this.config.location.geometry.coordinates[0],
       this.config.location.geometry.coordinates[1],
       600,
-    );
+    )
 
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new THREE.Mesh(geometry, material)
 
     // Offset position to prevent shader intersection with globe dots
-    mesh.position.copy(position).multiplyScalar(1.0025);
-    mesh.lookAt(position.multiplyScalar(2));
+    mesh.position.copy(position).multiplyScalar(1.0025)
+    mesh.lookAt(position.multiplyScalar(2))
 
-    return mesh;
+    return mesh
   }
 }

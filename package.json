@@ -2,31 +2,63 @@
   "name": "@chargetrip/globe",
   "description": "Interactive globe to render real-time data.",
   "version": "0.0.18",
-  "source": "src/index.ts",
-  "main": "dist/main.js",
-  "module": "dist/module.js",
-  "types": "dist/types.d.ts",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
-    "watch": "parcel example/index.html --log-level verbose",
-    "build": "parcel build --log-level verbose"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --fix",
+    "build": "vite build",
+    "prettier": "npx prettier . --write",
+    "prepare": "husky",
+    "type-check": "npx tsc",
+    "prepare:release": "rm -rf release && mkdir release && cp -r dist release && cp package.json release",
+    "release": "source .env && npm run prepare:release && GH_TOKEN=$GITHUB_TOKEN NPM_TOKEN=$NPM_TOKEN semantic-release --no-ci && rm -rf release"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "beta",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/npm",
+        {
+          "pkgRoot": "release"
+        }
+      ],
+      "@semantic-release/github"
+    ]
   },
   "devDependencies": {
-    "@parcel/packager-ts": "2.1.1",
-    "@parcel/resolver-glob": "2.1.1",
-    "@parcel/transformer-typescript-types": "2.1.1",
-    "@parcel/transformer-glsl": "2.1.1",
+    "@eslint/js": "^9.16.0",
     "@types/d3-geo": "^3.0.2",
+    "@types/node": "^22.15.27",
     "@types/three": "^0.133.1",
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "@typescript-eslint/parser": "^5.4.0",
-    "eslint": "^8.3.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.3",
-    "parcel": "latest",
-    "typescript": "^4.5.2"
+    "eslint": "^9.16.0",
+    "husky": "^9.1.7",
+    "path": "^0.12.7",
+    "semantic-release": "^24.2.5",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.17.0",
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-glsl": "^1.4.1"
   },
   "dependencies": {
+    "@chargetrip/frontend-utilities": "^1.4.1",
     "d3-geo": "^3.0.1",
-    "three": "^0.133.1"
+    "three": "^0.133.1",
+    "ts-deepmerge": "^7.0.3"
   }
 }

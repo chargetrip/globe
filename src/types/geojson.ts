@@ -1,19 +1,19 @@
 export enum GeoJSONType {
-    Point,
-    Linestring,
-    Polygon,
-    MultiPoint,
-    MultiLineString,
-    MultiPolygon
+  Point,
+  Linestring,
+  Polygon,
+  MultiPoint,
+  MultiLineString,
+  MultiPolygon,
 }
 
 export interface Geometry {
-    type: GeoJSONType,
-    coordinates: Array<number>
+  type: GeoJSONType
+  coordinates: [number, number]
 }
 
 export interface GeoJSON {
-    type: string,
-    geometry: Geometry,
-    properties?: object
+  type: string
+  geometry: Geometry
+  properties?: object
 }

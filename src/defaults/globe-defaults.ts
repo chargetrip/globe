@@ -1,4 +1,4 @@
-import type { GlobeConfig } from '../types/globe';
+import type { GlobeConfig } from '../types/globe'
 
 const globeDefaults: GlobeConfig = {
   radius: 600,
@@ -12,12 +12,14 @@ const globeDefaults: GlobeConfig = {
     offsetPolar: 0,
   },
   baseSphere: {
+    transparent: false,
     colorDay: '#606263',
     colorNight: '#0E0E11',
   },
   atmosphere: {
     render: true,
     color: '#FFFFFF',
+    transparent: false,
   },
   dotSphere: {
     numberOfDots: 60_000,
@@ -25,7 +27,8 @@ const globeDefaults: GlobeConfig = {
     alphaMap: 'https://i.imgur.com/OpzAqvM.png',
     color: '#97979F',
     opacity: 0.8,
+    transparent: false,
   },
-};
+}
 
-export default globeDefaults;
+export default globeDefaults

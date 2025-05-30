@@ -6,6 +6,6 @@ const barDefaults = {
   radiusTop: 4,
   radiusBottom: 4,
   height: 100,
-};
+}
 
-export default barDefaults;
+export default barDefaults

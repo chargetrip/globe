@@ -5,6 +5,6 @@ const arcDefaults = {
   endColorOpacity: 1,
   height: 0.25,
   radius: 1.5,
-};
+}
 
-export default arcDefaults;
+export default arcDefaults

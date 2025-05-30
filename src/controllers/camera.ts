@@ -1,21 +1,21 @@
-import * as THREE from 'three';
-import { X_AXIS, Y_AXIS, degreesToRadians } from '../utils/threejs';
-import type { GlobeConfig } from '../types/globe';
+import * as THREE from 'three'
+import { X_AXIS, Y_AXIS, degreesToRadians } from '../utils/threejs'
+import type { GlobeConfig } from '../types/globe'
 
 export default class GlobeCamera {
-  #clock: THREE.Clock;
+  // #clock: THREE.Clock;
 
-  pivot: THREE.Object3D;
-  camera: THREE.PerspectiveCamera;
-  targetQuaternion: THREE.Quaternion;
-  targetPosition: THREE.Vector3;
-  offsetAzimuth: number;
-  offsetPolar: number;
+  pivot: THREE.Object3D
+  camera: THREE.PerspectiveCamera
+  targetQuaternion: THREE.Quaternion
+  targetPosition: THREE.Vector3
+  // offsetAzimuth: number;
+  // offsetPolar: number;
+  //
+  // #t: number;
+  // #speed: number;
 
-  #t: number;
-  #speed: number;
-
-  cameraAnimation: GlobeConfig['cameraAnimation'];
+  cameraAnimation: GlobeConfig['cameraAnimation']
 
   constructor(
     camera: THREE.PerspectiveCamera,
@@ -24,34 +24,34 @@ export default class GlobeCamera {
     speed: number,
     cameraAnimation: GlobeConfig['cameraAnimation'],
   ) {
-    this.camera = camera;
+    this.camera = camera
 
-    this.#clock = clock;
-    this.pivot = new THREE.Object3D();
-    this.pivot.add(camera);
-    this.targetQuaternion = new THREE.Quaternion();
-    this.targetPosition = new THREE.Vector3(0, 0, 2000);
+    // this.#clock = clock;
+    this.pivot = new THREE.Object3D()
+    this.pivot.add(camera)
+    this.targetQuaternion = new THREE.Quaternion()
+    this.targetPosition = new THREE.Vector3(0, 0, 2000)
 
-    this.cameraAnimation = cameraAnimation;
+    this.cameraAnimation = cameraAnimation
 
-    this.#t = t;
-    this.#speed = speed;
+    // this.#t = t;
+    // this.#speed = speed;
   }
 
   public lookAt(lat: number, lng: number, alt = 2000): void {
-    const rotationY = new THREE.Quaternion();
-    const rotationX = new THREE.Quaternion();
+    const rotationY = new THREE.Quaternion()
+    const rotationX = new THREE.Quaternion()
 
     rotationY.setFromAxisAngle(
       Y_AXIS,
-      degreesToRadians(lng + this.cameraAnimation.offsetAzimuth)
-    );
+      degreesToRadians(lng + (this.cameraAnimation?.offsetAzimuth || 0)),
+    )
     rotationX.setFromAxisAngle(
       X_AXIS,
-      degreesToRadians(-lat + this.cameraAnimation.offsetPolar)
-    );
+      degreesToRadians(-lat + (this.cameraAnimation?.offsetPolar || 0)),
+    )
 
-    this.targetQuaternion.copy(rotationY.multiply(rotationX));
-    this.targetPosition.z = alt;
+    this.targetQuaternion.copy(rotationY.multiply(rotationX))
+    this.targetPosition.z = alt
   }
 }

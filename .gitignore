@@ -27,4 +27,5 @@ test/treeshake/index-src.bundle.min.js
 test/treeshake/stats.html
 
 
+release
 **/node_modules

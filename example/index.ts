@@ -1,9 +1,9 @@
-import GlobeScene from '../src/components/scene';
-import { GeoJSONType } from '../src/types/geojson';
-import Marker from '../src/components/marker';
-import Bar from '../src/components/bar';
+import GlobeScene from '../src/components/scene'
+import { GeoJSONType } from '../src/types/geojson'
+import Marker from '../src/components/marker'
+import Bar from '../src/components/bar'
 
-const container = document.querySelector('#globe-container') as HTMLCanvasElement;
+const container = document.querySelector('#globe-container') as HTMLCanvasElement
 
 // Instantanous camera move from point A to point B.
 // const globe = new GlobeScene(container, { cameraAnimation: { enabled: false }});
@@ -17,60 +17,52 @@ const globe = new GlobeScene({
     speed: 50.0,
     offsetPolar: 22.5,
   },
-});
+})
 
 const bar = new Bar({
   location: {
     type: 'Feature',
     geometry: {
       type: GeoJSONType.Point,
-      coordinates: [
-        52.3676, 4.9041,
-      ],
+      coordinates: [52.3676, 4.9041],
     },
   },
   height: 75,
-});
+})
 
 const marker = new Marker({
   location: {
     type: 'Feature',
     geometry: {
       type: GeoJSONType.Point,
-      coordinates: [
-        52.3676, 4.9041,
-      ],
+      coordinates: [52.3676, 4.9041],
     },
   },
-});
+})
 
 const bar2 = new Bar({
   location: {
     type: 'Feature',
     geometry: {
       type: GeoJSONType.Point,
-      coordinates: [
-        59.9139, 10.7522,
-      ],
+      coordinates: [59.9139, 10.7522],
     },
   },
   height: 200,
-});
+})
 
 const marker2 = new Marker({
   location: {
     type: 'Feature',
     geometry: {
       type: GeoJSONType.Point,
-      coordinates: [
-        59.9139, 10.7522,
-      ],
+      coordinates: [59.9139, 10.7522],
     },
   },
-});
+})
 
-globe.addMarkers([marker, marker2]);
-globe.addBars([bar, bar2]);
+globe.addMarkers([marker, marker2])
+globe.addBars([bar, bar2])
 
 const locations = [
   { lat: 52.3545828, lng: 4.9041, location: 'The Netherlands, Amsterdam' },
@@ -83,14 +75,14 @@ const locations = [
   { lat: 40.1301532, lng: -8.201886, location: 'Spain' },
   { lat: -29.754299, lng: 24.497087, location: 'South Africa' },
   { lat: 54.7226517, lng: -113.7225747, location: 'Canada' },
-];
+]
 
 function randomInteger(min: number, max: number): number {
-  return Math.floor(min + Math.random() * (max - min));
+  return Math.floor(min + Math.random() * (max - min))
 }
 
 setInterval(() => {
-  const { lat, lng } = locations[randomInteger(0, locations.length)];
+  const { lat, lng } = locations[randomInteger(0, locations.length)]
 
-  globe.camera.lookAt(lat, lng, randomInteger(1000, 2000));
-}, 5000);
+  globe.camera.lookAt(lat, lng, randomInteger(1000, 2000))
+}, 5000)
