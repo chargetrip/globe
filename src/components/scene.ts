@@ -19,6 +19,7 @@ export default class GlobeScene {
 
   #markerMeshes: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>[] = []
   #barMeshes: THREE.Mesh[] = []
+  #arcMeshes: THREE.Mesh[] = []
   #dotSphereMesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial> | null = null
   #atmosphere: THREE.Mesh<THREE.IcosahedronGeometry, THREE.ShaderMaterial> | undefined
 
@@ -169,6 +170,8 @@ export default class GlobeScene {
   addArc(arc: Arc): void {
     const arcMesh = arc.draw()
     this.#scene.add(arcMesh)
+
+    this.#arcMeshes.push(arcMesh);
   }
 
   addMarkers(markers: Marker | Marker[]): void {
@@ -203,8 +206,15 @@ export default class GlobeScene {
     }
   }
 
+  removeAllArcs():void {
+    for (const arc of this.#arcMeshes) {
+      this.#scene.remove(arc)
+    }
+  }
+
   removeAllAnnotations(): void {
     this.removeAllMarkers()
     this.removeAllBars()
+    this.removeAllArcs()
   }
 }
