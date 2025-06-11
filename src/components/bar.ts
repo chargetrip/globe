@@ -19,14 +19,11 @@ export default class Bar {
   draw(): THREE.Mesh {
     const targetVector = new THREE.Vector3(0, 0, 0)
 
-    const [lng, lat] = this.config.location.geometry.coordinates;
+    const [lng, lat] = this.config.location.geometry.coordinates
 
-    if(!lng || !lat) throw Error("Invalid coordinates");
+    if (!lng || !lat) throw Error('Invalid coordinates')
 
-    const position = calculateVec3FromLatLon(
-      lng, lat,
-      600,
-    )
+    const position = calculateVec3FromLatLon(lng, lat, 600)
 
     const geometry = new THREE.CylinderGeometry(
       this.config.radiusTop!,

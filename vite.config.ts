@@ -15,7 +15,7 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [...Object.keys(peerDependencies), '@vue/devtools-kit'],
-    }
+    },
   },
   server: {
     host: '0.0.0.0',

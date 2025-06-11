@@ -1,4 +1,4 @@
-import type { Feature, Point } from 'geojson';
+import type { Feature, Point } from 'geojson'
 
 export interface BarConfig {
   location: Feature<Point>

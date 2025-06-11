@@ -17,10 +17,10 @@ export default class GlobeScene {
 
   #renderer: THREE.WebGLRenderer
 
-  #markerMeshes: THREE.Mesh<THREE.PlaneGeometry,THREE.ShaderMaterial>[] = []
+  #markerMeshes: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>[] = []
   #barMeshes: THREE.Mesh[] = []
   #dotSphereMesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial> | null = null
-  #atmosphere: THREE.Mesh<THREE.IcosahedronGeometry,THREE.ShaderMaterial> | undefined
+  #atmosphere: THREE.Mesh<THREE.IcosahedronGeometry, THREE.ShaderMaterial> | undefined
 
   readonly globeConfig: GlobeConfig
   readonly container: HTMLCanvasElement
@@ -126,7 +126,8 @@ export default class GlobeScene {
   private animate(): void {
     const delta = this.#clock.getDelta()
 
-    if (!this.#atmosphere || !this.#atmosphere.material.uniforms.viewVector) throw Error('No atmosphere.')
+    if (!this.#atmosphere || !this.#atmosphere.material.uniforms.viewVector)
+      throw Error('No atmosphere.')
 
     this.#atmosphere.material.uniforms.viewVector.value = this.#camera.position
 

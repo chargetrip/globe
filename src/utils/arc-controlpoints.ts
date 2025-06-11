@@ -13,10 +13,11 @@ export default function calculateArcControlPoints(config: ArcConfig): ControlPoi
     lat: config.endLocation.geometry.coordinates[1],
   }
 
-  if(!startCoords.lat || !startCoords.lon || !endCoords.lat || !endCoords.lon) throw Error("Invalid coordinates")
+  if (!startCoords.lat || !startCoords.lon || !endCoords.lat || !endCoords.lon)
+    throw Error('Invalid coordinates')
 
-  const startVec3 = calculateVec3FromLatLon(startCoords.lat, startCoords.lon, 600)
-  const endVec3 = calculateVec3FromLatLon(endCoords.lat, endCoords.lon, 600)
+  const startVec3 = calculateVec3FromLatLon(startCoords.lon, startCoords.lat, 600)
+  const endVec3 = calculateVec3FromLatLon(endCoords.lon, endCoords.lat, 600)
   const arcHeight = startVec3.distanceTo(endVec3) * config.height! + 600
 
   const interpolate = geoInterpolate(
@@ -29,8 +30,8 @@ export default function calculateArcControlPoints(config: ArcConfig): ControlPoi
     end: interpolate(0.75),
   }
 
-  const midStartVec3 = calculateVec3FromLatLon(midCoords.start[1], midCoords.start[0], arcHeight)
-  const midEndVec3 = calculateVec3FromLatLon(midCoords.end[1], midCoords.end[0], arcHeight)
+  const midStartVec3 = calculateVec3FromLatLon(midCoords.start[0], midCoords.start[1], arcHeight)
+  const midEndVec3 = calculateVec3FromLatLon(midCoords.end[0], midCoords.end[1], arcHeight)
 
   return {
     start: startVec3,

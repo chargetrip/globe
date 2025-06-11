@@ -36,15 +36,11 @@ export default class Marker {
       depthTest: false,
     })
 
-    const [lng, lat] = this.config.location.geometry.coordinates;
+    const [lng, lat] = this.config.location.geometry.coordinates
 
-    if(!lng || !lat) throw Error("Invalid coordinates.");
+    if (!lng || !lat) throw Error('Invalid coordinates.')
 
-    const position = calculateVec3FromLatLon(
-      lng,
-      lat,
-      600,
-    )
+    const position = calculateVec3FromLatLon(lng, lat, 600)
 
     const mesh = new THREE.Mesh(geometry, material)
 

@@ -1,5 +1,5 @@
 import { Vector3 } from 'three'
-import type { Feature, Point } from 'geojson';
+import type { Feature, Point } from 'geojson'
 
 export interface ArcConfig {
   startLocation: Feature<Point>
