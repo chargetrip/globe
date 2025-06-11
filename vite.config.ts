@@ -2,6 +2,7 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import glsl from 'vite-plugin-glsl'
+import { peerDependencies } from './package.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +13,9 @@ export default defineConfig({
       name: 'FrontendUtilities',
       fileName: 'index',
     },
+    rollupOptions: {
+      external: [...Object.keys(peerDependencies), '@vue/devtools-kit'],
+    }
   },
   server: {
     host: '0.0.0.0',

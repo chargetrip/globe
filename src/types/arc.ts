@@ -1,9 +1,9 @@
 import { Vector3 } from 'three'
-import type { GeoJSON } from './geojson'
+import type { Feature, Point } from 'geojson';
 
 export interface ArcConfig {
-  startLocation: GeoJSON
-  endLocation: GeoJSON
+  startLocation: Feature<Point>
+  endLocation: Feature<Point>
   startColor?: string
   startColorOpacity?: number
   endColor?: string

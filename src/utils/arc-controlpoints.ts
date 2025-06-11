@@ -13,6 +13,8 @@ export default function calculateArcControlPoints(config: ArcConfig): ControlPoi
     lat: config.endLocation.geometry.coordinates[1],
   }
 
+  if(!startCoords.lat || !startCoords.lon || !endCoords.lat || !endCoords.lon) throw Error("Invalid coordinates")
+
   const startVec3 = calculateVec3FromLatLon(startCoords.lat, startCoords.lon, 600)
   const endVec3 = calculateVec3FromLatLon(endCoords.lat, endCoords.lon, 600)
   const arcHeight = startVec3.distanceTo(endVec3) * config.height! + 600

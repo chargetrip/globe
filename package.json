@@ -10,6 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --fix",
+    "dev": "vite",
     "build": "vite build",
     "prettier": "npx prettier . --write",
     "prepare": "husky",
@@ -40,6 +41,11 @@
       "@semantic-release/github"
     ]
   },
+  "peerDependencies": {
+    "@chargetrip/frontend-utilities": "^1.4.1",
+    "d3-geo": "^3.0.1",
+    "three": "^0.133.1"
+  },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
     "@types/d3-geo": "^3.0.2",
@@ -56,9 +62,7 @@
     "vite-plugin-glsl": "^1.4.1"
   },
   "dependencies": {
-    "@chargetrip/frontend-utilities": "^1.4.1",
-    "d3-geo": "^3.0.1",
-    "three": "^0.133.1",
+    "geojson": "^0.5.0",
     "ts-deepmerge": "^7.0.3"
   }
 }

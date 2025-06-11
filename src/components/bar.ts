@@ -18,9 +18,13 @@ export default class Bar {
 
   draw(): THREE.Mesh {
     const targetVector = new THREE.Vector3(0, 0, 0)
+
+    const [lng, lat] = this.config.location.geometry.coordinates;
+
+    if(!lng || !lat) throw Error("Invalid coordinates");
+
     const position = calculateVec3FromLatLon(
-      this.config.location.geometry.coordinates[0],
-      this.config.location.geometry.coordinates[1],
+      lng, lat,
       600,
     )
 

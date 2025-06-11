@@ -1,7 +1,7 @@
-import type { GeoJSON } from './geojson'
+import type { Feature, Point } from 'geojson';
 
 export interface BarConfig {
-  location: GeoJSON
+  location: Feature<Point>
   startColor?: string
   startColorOpacity?: number
   endColor?: string

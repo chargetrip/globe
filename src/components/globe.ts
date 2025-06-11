@@ -15,7 +15,7 @@ import dotsFragmentShader from '../shaders/dots.frag.glsl'
 export default class Globe {
   readonly config: GlobeConfig
 
-  isAnimating = true
+  // isAnimating = true
   #camera: THREE.PerspectiveCamera
 
   constructor(config: GlobeConfig, camera: THREE.PerspectiveCamera) {

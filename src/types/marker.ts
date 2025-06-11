@@ -1,7 +1,7 @@
-import type { GeoJSON } from './geojson'
+import type { Feature, Point } from 'geojson';
 
 export interface MarkerConfig {
-  location: GeoJSON
+  location: Feature<Point>
   color?: string
   size?: number
   circleRadius?: number
