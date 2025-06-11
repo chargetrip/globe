@@ -5,7 +5,7 @@ export default function configureDotMatrix(
   imageData: ImageData,
   i: number,
   matrix: THREE.Matrix4,
-  instancedMesh: THREE.InstancedMesh,
+  instancedMesh: THREE.InstancedMesh
 ): THREE.Matrix4 {
   const radius = 600
   const numberOfDots = 60000
