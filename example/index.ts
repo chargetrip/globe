@@ -1,7 +1,7 @@
 import GlobeScene from '../src/components/scene'
 import Marker from '../src/components/marker'
 import Bar from '../src/components/bar'
-import { point } from '@turf/helpers';
+import { point } from '@turf/helpers'
 
 const container = document.querySelector('#globe-container') as HTMLCanvasElement
 
@@ -25,7 +25,7 @@ const bar = new Bar({
 })
 
 const marker = new Marker({
-  location: point([52.3676, 4.9041])
+  location: point([52.3676, 4.9041]),
 })
 
 const bar2 = new Bar({
@@ -34,7 +34,7 @@ const bar2 = new Bar({
 })
 
 const marker2 = new Marker({
-  location: point([59.9139, 10.7522])
+  location: point([59.9139, 10.7522]),
 })
 
 globe.addMarkers([marker, marker2])

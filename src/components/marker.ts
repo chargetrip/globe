@@ -38,9 +38,6 @@ export default class Marker {
 
     const [lng, lat] = this.config.location.geometry.coordinates
 
-    console.log(lng);
-    console.log(lat);
-
     if (!lng || !lat) throw Error('Invalid coordinates.')
 
     const position = calculateVec3FromLatLon(lng, lat, 600)
