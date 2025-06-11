@@ -10,7 +10,7 @@ export function degreesToRadians(degrees: number): number {
 
 export const calculateVec3FromLatLon = (lng: number, lat: number, radius: number): Vector3 => {
   const phi = degreesToRadians(90 - lat)
-  const theta = degreesToRadians(lon + 90)
+  const theta = degreesToRadians(lng + 90)
   const rho = radius
 
   const x = -(Math.sin(phi) * Math.cos(theta) * rho)

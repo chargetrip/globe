@@ -171,7 +171,7 @@ export default class GlobeScene {
     const arcMesh = arc.draw()
     this.#scene.add(arcMesh)
 
-    this.#arcMeshes.push(arcMesh);
+    this.#arcMeshes.push(arcMesh)
   }
 
   addMarkers(markers: Marker | Marker[]): void {
@@ -206,7 +206,7 @@ export default class GlobeScene {
     }
   }
 
-  removeAllArcs():void {
+  removeAllArcs(): void {
     for (const arc of this.#arcMeshes) {
       this.#scene.remove(arc)
     }
