@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { parseColor } from '../utils/color'
 import { CubicBezierCurve3 } from 'three'
 import type { ArcConfig } from '../types/arc'
 import calculateArcControlPoints from '../utils/arc-controlpoints'
@@ -27,10 +28,10 @@ export default class Arc {
       controlPoints.end,
     )
 
-    const vec3StartColor = new THREE.Color(this.config.startColor! ?? '#ff00fff')
-    const vec3EndColor = new THREE.Color(this.config.endColor! ?? '#ffff00')
+    const vec3StartColor = parseColor(this.config.startColor! ?? '#ff00fff')
+    const vec3EndColor = parseColor(this.config.endColor! ?? '#ffff00')
 
-    const geometry = new THREE.TubeBufferGeometry(curve, 44, this.config.radius!, 8)
+    const geometry = new THREE.TubeGeometry(curve, 44, this.config.radius!, 8)
     geometry.computeBoundingBox()
 
     if (!geometry.boundingBox) {

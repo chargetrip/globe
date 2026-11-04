@@ -5,6 +5,7 @@ const markerDefaults = {
   borderInnerRadius: 0.15,
   borderOuterRadius: 0.2,
   animates: true,
+  blending: 'additive' as const,
 }
 
 export default markerDefaults

@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { parseColor } from '../utils/color'
 
 import { calculateVec3FromLatLon } from '../utils/threejs'
 import type { MarkerConfig } from '../types/marker'
@@ -18,7 +19,7 @@ export default class Marker {
     }
   }
 
-  draw(): THREE.Mesh {
+  draw(): THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial> {
     const geometry = new THREE.PlaneGeometry(this.config.size, this.config.size)
     const material = new THREE.ShaderMaterial({
       uniforms: {
@@ -27,12 +28,12 @@ export default class Marker {
         borderOuterRadius: { value: this.config.borderOuterRadius },
         time: { value: randMinMax(0, 10) },
         animates: { value: this.config.animates },
-        ringColor: { value: new THREE.Color(this.config.color) },
+        ringColor: { value: parseColor(this.config.color ?? markerDefaults.color) },
       },
       fragmentShader: markerFragmentShader,
       vertexShader: markerVertexShader,
       transparent: true,
-      blending: THREE.AdditiveBlending,
+      blending: this.config.blending === 'normal' ? THREE.NormalBlending : THREE.AdditiveBlending,
       depthTest: false,
     })
 

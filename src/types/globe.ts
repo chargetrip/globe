@@ -31,4 +31,11 @@ export interface GlobeConfig {
   }
 }
 
+export interface GlobeColors {
+  baseDay?: string
+  baseNight?: string
+  atmosphere?: string
+  dots?: string
+}
+
 export type GlobalConfigInput = DeepPartial<GlobeConfig>

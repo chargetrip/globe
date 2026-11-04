@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { parseColor } from '../utils/color'
 import { getImageData } from '../utils/image-data'
 import configureDotMatrix from '../utils/globe-dots'
 import type { GlobeConfig } from '../types/globe'
@@ -23,15 +24,15 @@ export default class Globe {
     this.#camera = camera
   }
 
-  drawBaseSphere(): THREE.Mesh {
+  drawBaseSphere(): THREE.Mesh<THREE.IcosahedronGeometry, THREE.ShaderMaterial> {
     const geometry = new THREE.IcosahedronGeometry(this.config.radius, 11)
     const material = new THREE.ShaderMaterial({
       uniforms: {
         colorDay: {
-          value: new THREE.Color(this.config.baseSphere!.colorDay!),
+          value: parseColor(this.config.baseSphere!.colorDay!),
         },
         colorNight: {
-          value: new THREE.Color(this.config.baseSphere!.colorNight!),
+          value: parseColor(this.config.baseSphere!.colorNight!),
         },
       },
       vertexShader: baseSphereVertexShader,
@@ -44,11 +45,11 @@ export default class Globe {
     return baseSphere
   }
 
-  drawAtmosphere(): THREE.Mesh {
+  drawAtmosphere(): THREE.Mesh<THREE.IcosahedronGeometry, THREE.ShaderMaterial> {
     const atmosphereGeometry = new THREE.IcosahedronGeometry(this.config.radius, 11)
     const atmosphereMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        color: { value: new THREE.Color(this.config.atmosphere!.color!) },
+        color: { value: parseColor(this.config.atmosphere!.color!) },
         viewVector: { value: this.#camera.position },
       },
       // blending: THREE.AdditiveBlending,
@@ -64,7 +65,7 @@ export default class Globe {
     return atmosphere
   }
 
-  async drawDotSphere(): Promise<THREE.Mesh> {
+  async drawDotSphere(): Promise<THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>> {
     const imageData = await getImageData(this.config.dotSphere!.alphaMap!)
 
     if (!imageData) {
@@ -79,7 +80,7 @@ export default class Globe {
           value: 5.0,
         },
         color: {
-          value: new THREE.Color(this.config.dotSphere!.color!),
+          value: parseColor(this.config.dotSphere!.color!),
         },
       },
       transparent: true,

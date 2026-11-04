@@ -14,7 +14,7 @@ void main() {
     vec2 uv = vec2((vUv.x - 0.5), (vUv.y - 0.5));
     
     // Base color    
-    vec4 color = vec4( 1.0, 1.0, 1.0, 0.0 );
+    vec4 color = vec4( ringColor, 0.0 );
     
     float dist = distance( vec2(0.0, 0.0), uv );
         

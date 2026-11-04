@@ -8,4 +8,5 @@ export interface MarkerConfig {
   borderInnerRadius?: number
   borderOuterRadius?: number
   animates?: boolean
+  blending?: 'additive' | 'normal'
 }

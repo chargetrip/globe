@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { parseColor } from '../utils/color'
 import type { BarConfig } from '../types/bar'
 import { calculateVec3FromLatLon } from '../utils/threejs'
 
@@ -32,8 +33,8 @@ export default class Bar {
     )
     geometry.computeBoundingBox()
 
-    const vec3StartColor = new THREE.Color(this.config.startColor! ?? '#ff00ff')
-    const vec3EndColor = new THREE.Color(this.config.endColor! ?? '#ffff00')
+    const vec3StartColor = parseColor(this.config.startColor! ?? '#ff00ff')
+    const vec3EndColor = parseColor(this.config.endColor! ?? '#ffff00')
 
     if (!geometry.boundingBox) {
       throw Error('Globe - size of bar is unknown')
