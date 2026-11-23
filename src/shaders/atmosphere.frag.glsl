@@ -1,6 +1,7 @@
 uniform vec3 color;
 varying vec3 vertexNormal;
 uniform vec3 viewVector;
+uniform float opacity;
 
 void main() {
     float atmoFade = dot(vertexNormal, vec3(0.0, 0.0, 1.0));
@@ -14,5 +15,5 @@ void main() {
 
     float edgeFade = dot(vertexNormal.xy, vec2(-1.0, 1.0)) + 0.25;
 
-    gl_FragColor = vec4(color, edgeFade * atmosphere);
+    gl_FragColor = vec4(color, edgeFade * atmosphere * opacity);
 }

@@ -208,6 +208,16 @@ export default class GlobeScene {
   }
 
   /**
+   * Update the atmosphere opacity in place, from 0 (invisible) to 1 (default).
+   */
+  setAtmosphereOpacity(opacity: number): void {
+    this.globeConfig.atmosphere.opacity = opacity
+
+    const uniform = this.#atmosphere?.material.uniforms.opacity
+    if (uniform) uniform.value = opacity
+  }
+
+  /**
    * Update the globe colors in place, e.g. when switching between a light and dark theme.
    * Annotations (arcs, markers, bars) are configured per instance and need to be re-added.
    */

@@ -51,6 +51,7 @@ export default class Globe {
       uniforms: {
         color: { value: parseColor(this.config.atmosphere!.color!) },
         viewVector: { value: this.#camera.position },
+        opacity: { value: this.config.atmosphere!.opacity! },
       },
       // blending: THREE.AdditiveBlending,
       side: THREE.BackSide,

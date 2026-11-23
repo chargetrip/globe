@@ -19,6 +19,7 @@ export interface GlobeConfig {
   atmosphere: {
     render: boolean
     color: string
+    opacity: number
     transparent: boolean
   }
   dotSphere: {

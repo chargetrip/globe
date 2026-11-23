@@ -19,6 +19,7 @@ const globeDefaults: GlobeConfig = {
   atmosphere: {
     render: true,
     color: '#FFFFFF',
+    opacity: 1,
     transparent: false,
   },
   dotSphere: {
